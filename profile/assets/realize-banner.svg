@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="380" viewBox="0 0 1280 380" role="img" aria-labelledby="title description">
+  <title id="title">SkySecure Agent Factory — Realize</title>
+  <desc id="description">Build for the business. Deliver through Realize. Business use case, agent engineering, automated delivery.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101f3d" />
+      <stop offset="1" stop-color="#071327" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#70e0d0" />
+      <stop offset="1" stop-color="#96bcff" />
+    </linearGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#7287a5" stroke-opacity="0.09" />
+    </pattern>
+  </defs>
+  <rect width="1280" height="380" rx="22" fill="url(#background)" />
+  <rect width="1280" height="380" rx="22" fill="url(#grid)" />
+  <path d="M858 0H1258Q1280 0 1280 22V358Q1280 380 1258 380H858Z" fill="#122b46" opacity="0.38" />
+  <rect x="52" y="44" width="5" height="22" rx="2.5" fill="#70e0d0" />
+  <text x="72" y="61" fill="#c1d3ec" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="600" letter-spacing="2.2">SKYSECURE AGENT FACTORY</text>
+  <text x="52" y="141" fill="#ffffff" font-family="Segoe UI,Arial,sans-serif" font-size="48" font-weight="700" letter-spacing="-1.1">Build for the business.</text>
+  <text x="52" y="203" fill="url(#accent)" font-family="Segoe UI,Arial,sans-serif" font-size="48" font-weight="700" letter-spacing="-1.1">Deliver through Realize.</text>
+  <text x="54" y="252" fill="#c1d3ec" font-family="Segoe UI,Arial,sans-serif" font-size="20">Purpose-built AI agents. One repeatable delivery journey.</text>
+  <line x1="54" y1="293" x2="793" y2="293" stroke="#334967" />
+  <text x="54" y="329" fill="#e2ebf8" font-family="Segoe UI,Arial,sans-serif" font-size="16">COPILOT</text>
+  <circle cx="166" cy="323" r="3" fill="#70e0d0" />
+  <text x="186" y="329" fill="#e2ebf8" font-family="Segoe UI,Arial,sans-serif" font-size="16">FOUNDRY</text>
+  <circle cx="303" cy="323" r="3" fill="#70e0d0" />
+  <text x="323" y="329" fill="#e2ebf8" font-family="Segoe UI,Arial,sans-serif" font-size="16">OPEN SOURCE</text>
+  <text x="466" y="329" fill="#9eafc8" font-family="Segoe UI,Arial,sans-serif" font-size="14">ROADMAP</text>
+  <path d="M930 102V278" fill="none" stroke="#43678b" stroke-width="2" />
+  <g font-family="Segoe UI,Arial,sans-serif">
+    <rect x="900" y="65" width="328" height="69" rx="13" fill="#152f4e" stroke="#385675" />
+    <rect x="900" y="155" width="328" height="69" rx="13" fill="#152f4e" stroke="#385675" />
+    <rect x="900" y="245" width="328" height="69" rx="13" fill="#173d50" stroke="#5d9f9e" />
+    <text x="921" y="108" fill="#83e1d4" font-size="18" font-weight="700">01</text>
+    <text x="968" y="108" fill="#edf4fd" font-size="20" font-weight="600">Business use case</text>
+    <text x="921" y="198" fill="#83e1d4" font-size="18" font-weight="700">02</text>
+    <text x="968" y="198" fill="#edf4fd" font-size="20" font-weight="600">Agent engineering</text>
+    <text x="921" y="288" fill="#83e1d4" font-size="18" font-weight="700">03</text>
+    <text x="968" y="288" fill="#edf4fd" font-size="20" font-weight="600">Realize deployment</text>
+  </g>
+</svg>
