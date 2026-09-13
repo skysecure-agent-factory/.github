@@ -78,14 +78,13 @@ Each release needs clear ownership, test evidence, customer authorization, corre
 
 ## Engineering together
 
-Consistent conventions keep collaboration simple as the factory grows. **Expand a topic for the working standard.**
+Consistent conventions keep collaboration simple as the factory grows.
 
 <br />
 
-<details>
-<summary><strong>01 &nbsp; Repository naming</strong> — a clear name for every agent</summary>
+### 01 · Repository naming
 
-<br />
+**A clear name for every agent.**
 
 ```text
 af-{layer}-{business-name}-agent-{approach}
@@ -99,14 +98,11 @@ Example: `af-be-customer-service-agent-copilot`.
 
 Keep environment and developer names out of repository names. Repository owners must document approved exceptions. `.github`, governance, and shared platform repositories serve separate purposes and do not need the agent naming pattern.
 
-</details>
-
 <br />
 
-<details>
-<summary><strong>02 &nbsp; Task branches and pull requests</strong> — one task, one focused change</summary>
+### 02 · Task branches and pull requests
 
-<br />
+**One task, one focused change.**
 
 Start from the latest `dev` → create a task branch → commit and test → open a PR into `dev` → review and merge → delete the merged task branch after checking dependencies.
 
@@ -121,14 +117,11 @@ A task can include several commits and collaborators. Create a new branch for th
 
 Keep `dev` long-lived. Retain `prod`, `test`, or other established environment branches while the configured workflow needs them; never delete them during task cleanup. Profile and governance repositories follow their own configured default branches.
 
-</details>
-
 <br />
 
-<details>
-<summary><strong>03 &nbsp; Environments and releases</strong> — deliberate promotion to production</summary>
+### 03 · Environments and releases
 
-<br />
+**Deliberate promotion to production.**
 
 - Isolate development and production configuration, credentials, permissions, and state.
 - Use the approved release path; promote to `prod` only where that branch is part of the configured workflow.
@@ -136,14 +129,11 @@ Keep `dev` long-lived. Retain `prod`, `test`, or other established environment b
 - Coordinate repository or branch renames with deployment identities, workflow references, integrations, and owners.
 - Configure and verify required reviews, checks, and protections on the supported GitHub plan. Documentation alone does not enforce them.
 
-</details>
-
 <br />
 
-<details>
-<summary><strong>04 &nbsp; Scheduled workers</strong> — shared source, independent runtime</summary>
+### 04 · Scheduled workers
 
-<br />
+**Shared source, independent runtime.**
 
 An agent's API and scheduled worker may share a repository while running as separate deployment resources. Sharing code does not mean sharing a running process.
 
@@ -151,14 +141,11 @@ Where Azure Container Apps Jobs is the selected runtime, use its configured job 
 
 Existing `-cron` repositories remain separate until consolidation is implemented and validated. A separate cron repository is not required for every new agent.
 
-</details>
-
 <br />
 
-<details>
-<summary><strong>05 &nbsp; Quality, security, and ownership</strong> — evidence before release</summary>
+### 05 · Quality, security, and ownership
 
-<br />
+**Evidence before release.**
 
 - **Security and privacy:** least privilege, tenant and role boundaries, protected secrets, and no sensitive data in source or logs.
 - **Correctness:** tested business rules, integrations, and data integrity, backed by acceptance evidence.
@@ -167,8 +154,6 @@ Existing `-cron` repositories remain separate until consolidation is implemented
 - **Ownership:** a responsible team, useful documentation, and a clear support and escalation path.
 
 Use team-based access with the least privilege required. Designated administrators manage sensitive repository settings and deployment environments. GitHub access and cloud permissions are separate responsibilities.
-
-</details>
 
 <br />
 
@@ -182,5 +167,5 @@ This page is public. Never publish customer data, secrets, private infrastructur
 
 <p align="center">
   <strong>SkySecure Agent Factory · Realize</strong><br />
-  <sub>Focused on the business. Built for accountable delivery.</sub>
+  Focused on the business. Built for accountable delivery.
 </p>

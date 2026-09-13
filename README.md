@@ -23,7 +23,7 @@ This repository and its PRs are public. Do not commit credentials, customer data
 - `.github/workflows/guide-pages.yml`: PR validation and `prod`-only Pages deployment.
 - `_site/`: generated, ignored deployment output. Do not edit or commit it.
 
-The previous local auto-publisher has been retired. Its `guide-live` branch is retained for migration recovery only. Old standalone HTML copies do not publish.
+The previous local auto-publisher has been retired. Old standalone HTML copies do not publish.
 
 ## Checks and build
 
