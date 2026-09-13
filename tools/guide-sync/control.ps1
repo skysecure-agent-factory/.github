@@ -69,6 +69,15 @@ switch ($Action) {
     'Status' {
         if ($guideExistingTask) { $guideExistingTask | Select-Object TaskName, State | Format-Table -AutoSize }
         else { Write-Output 'Automatic-start task is not installed.' }
+        $guideStatusPattern = '^\s*"?' + [regex]::Escape($guideNodePath) + '"?\s+"' + [regex]::Escape($guideSyncPath) + '"\s+--watch\s*$'
+        $guideOwnedProcesses = @(Get-CimInstance Win32_Process -Filter "Name = 'node.exe'" | Where-Object {
+            $_.ExecutablePath -ieq $guideNodePath -and $_.CommandLine -match $guideStatusPattern
+        })
+        if ($guideOwnedProcesses.Count -gt 0) {
+            $guideOwnedProcesses | Select-Object @{Name='PublisherProcessId';Expression={$_.ProcessId}}, CreationDate | Format-Table -AutoSize
+        }
+        else { Write-Output 'The local publisher process is not running.' }
+        Write-Output 'Idle sync makes no network checks. State timestamps describe the last meaningful operation, not a heartbeat.'
         & $guideNodePath $guideSyncPath --status
     }
     'Uninstall' {

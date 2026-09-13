@@ -13,6 +13,10 @@ export const REPOSITORY = 'skysecure-agent-factory/.github';
 export const BRANCH = 'guide-live';
 export const PUBLIC_URL = 'https://skysecure-agent-factory.github.io/.github/';
 export const MIN_PUBLICATION_INTERVAL_MS = 390_000;
+export const LOCAL_POLL_INTERVAL_MS = 60_000;
+export const LIVE_VERIFY_INITIAL_DELAY_MS = 30_000;
+export const LIVE_VERIFY_MAX_DELAY_MS = 300_000;
+export const LIVE_VERIFY_WINDOW_MS = 20 * 60_000;
 export const VERSION_MARKER = '<meta name="skysecure-guide-version" content="local">';
 const MAX_SOURCE_BYTES = 2 * 1024 * 1024;
 const API_BASE = `https://api.github.com/repos/${REPOSITORY}`;
@@ -204,6 +208,20 @@ async function readSnapshot(filename) {
   }
 }
 
+export async function sourceFingerprint(filename) {
+  try {
+    const info = await fs.lstat(filename, { bigint: true });
+    if (!info.isFile() || info.size > BigInt(MAX_SOURCE_BYTES)) throw new SyncError('invalid-source');
+    // ctime/inode also catch atomic editor replacement and restored modification times.
+    return `${info.dev}:${info.ino}:${info.size}:${info.mtimeNs}:${info.ctimeNs}`;
+  } catch (error) {
+    if (error instanceof SyncError) throw error;
+    if (['ENOENT', 'EBUSY', 'EPERM', 'EACCES'].includes(error.code))
+      throw new SyncError('source-missing', { retryable: true });
+    throw new SyncError('invalid-source');
+  }
+}
+
 export async function readStableGuide(filename = SOURCE_PATH, { stabilityMs = 1_000, wait = sleep } = {}) {
   const first = await readSnapshot(filename);
   await wait(stabilityMs);
@@ -340,6 +358,7 @@ export class GitHubApi {
 export class GuideSync {
   constructor({ sourcePath = SOURCE_PATH, directory = SYNC_DIRECTORY, api = new GitHubApi(),
     fetchImpl = fetch, now = () => Date.now(), stableRead = readStableGuide,
+    fingerprint = sourceFingerprint,
     log = (message) => console.log(message) } = {}) {
     this.sourcePath = sourcePath;
     this.directory = directory;
@@ -347,33 +366,110 @@ export class GuideSync {
     this.fetch = fetchImpl;
     this.now = now;
     this.stableRead = stableRead;
+    this.fingerprint = fingerprint;
     this.log = log;
     this.state = null;
     this.failures = 0;
     this.retryAt = 0;
     this.halted = false;
     this.lastLog = '';
+    this.lastPersisted = null;
+    this.sourceMetadata = null;
+    this.sourceDirty = true;
+    this.rendered = null;
+    this.needsRemoteValidation = true;
+    this.verification = null;
+    this.wasPaused = false;
   }
   async initialize() {
     await fs.mkdir(this.directory, { recursive: true });
     this.state = await readState(this.directory);
+    this.lastPersisted = `${JSON.stringify(this.state, null, 2)}\n`;
     this.state.sourcePath = this.sourcePath;
     return this;
   }
   async persist() {
     validateState(this.state);
-    await atomicWrite(path.join(this.directory, 'state.json'), `${JSON.stringify(this.state, null, 2)}\n`);
+    const serialized = `${JSON.stringify(this.state, null, 2)}\n`;
+    if (serialized === this.lastPersisted) return;
+    await atomicWrite(path.join(this.directory, 'state.json'), serialized);
+    this.lastPersisted = serialized;
   }
   async isPaused() { return exists(path.join(this.directory, 'paused')); }
   setStatus(status, message) {
+    const changed = this.state.status !== status || this.state.message !== message;
     this.state.status = status;
     this.state.message = message;
-    this.state.lastCheckedAt = new Date(this.now()).toISOString();
+    // This is a meaningful state transition, not an every-poll heartbeat.
+    if (changed) this.state.lastCheckedAt = new Date(this.now()).toISOString();
     const signature = `${status}:${message}`;
     if (signature !== this.lastLog) {
       this.log(`${this.state.lastCheckedAt} ${status}: ${message}`);
       this.lastLog = signature;
     }
+  }
+  async refreshSource() {
+    const metadata = await this.fingerprint(this.sourcePath);
+    if (!this.sourceDirty && metadata === this.sourceMetadata) return false;
+    this.sourceDirty = false;
+    this.sourceMetadata = metadata;
+    this.rendered = null;
+    const source = await this.stableRead(this.sourcePath);
+    const after = await this.fingerprint(this.sourcePath);
+    if (after !== metadata) {
+      this.sourceDirty = true;
+      throw new SyncError('source-unstable', { retryable: true });
+    }
+    this.rendered = renderGuide(source, new Date(this.now()).toISOString());
+    this.sourceBytes = source;
+    const changed = this.state.lastLocalHash !== this.rendered.sourceHash;
+    this.state.lastLocalHash = this.rendered.sourceHash;
+    return changed;
+  }
+  beginVerification() {
+    if (this.state.liveMatchesPublished
+        && this.state.liveSourceHash === this.state.lastPublishedHash
+        && this.state.liveIndexBlobSha === this.state.lastPublishedIndexBlobSha) {
+      this.verification = null;
+      return;
+    }
+    this.state.liveMatchesPublished = false;
+    this.state.liveVerificationDeferred = false;
+    this.verification = { hash: this.state.lastPublishedHash, startedAt: this.now(),
+      deadlineAt: this.now() + LIVE_VERIFY_WINDOW_MS, nextAt: this.now(), attempts: 0 };
+  }
+  async verifyPendingLive() {
+    const pending = this.verification;
+    if (!pending || this.now() < pending.nextAt) return;
+    if (this.now() >= pending.deadlineAt) {
+      this.state.liveVerificationDeferred = true;
+      this.state.liveNextCheckAt = null;
+      this.verification = null;
+      return;
+    }
+    await this.verifyLive();
+    if (this.state.liveMatchesPublished) {
+      this.state.liveVerificationDeferred = false;
+      this.state.liveNextCheckAt = null;
+      this.verification = null;
+      return;
+    }
+    const delay = Math.min(LIVE_VERIFY_MAX_DELAY_MS,
+      LIVE_VERIFY_INITIAL_DELAY_MS * 2 ** Math.min(pending.attempts++, 4));
+    pending.nextAt = Math.min(pending.deadlineAt, this.now() + delay);
+    this.state.liveNextCheckAt = new Date(pending.nextAt).toISOString();
+  }
+  nextWakeDelay() {
+    let next = this.now() + LOCAL_POLL_INTERVAL_MS;
+    if (!this.halted && !this.wasPaused) {
+      if (this.retryAt > this.now()) next = Math.min(next, this.retryAt);
+      if (this.verification && this.rendered) next = Math.min(next, this.verification.nextAt);
+      if (this.rendered && this.rendered.sourceHash !== this.state.lastPublishedHash && !this.retryAt) {
+        const due = Date.parse(this.state.lastPublishedAt) + MIN_PUBLICATION_INTERVAL_MS;
+        if (Number.isFinite(due)) next = Math.min(next, Math.max(this.now() + 250, due));
+      }
+    }
+    return Math.max(250, next - this.now());
   }
   async verifyLive() {
     if (!this.state.lastPublishedHash) return;
@@ -416,48 +512,70 @@ export class GuideSync {
       this.state.liveError = 'The public version could not yet be verified.';
     }
   }
-  async tick() {
+  async tick({ sourceChanged = false } = {}) {
     if (!this.state) await this.initialize();
+    if (sourceChanged) this.sourceDirty = true;
     try {
       if (await this.isPaused()) {
+        this.wasPaused = true;
         this.setStatus('paused', MESSAGES.paused);
         await this.persist();
         return this.state;
       }
       const resumeFile = path.join(this.directory, 'resume.request');
-      if (await exists(resumeFile)) {
-        await fs.unlink(resumeFile);
+      const resumeRequested = await exists(resumeFile);
+      if (resumeRequested || this.wasPaused) {
+        if (resumeRequested) await fs.unlink(resumeFile);
+        this.wasPaused = false;
         this.halted = false;
         this.retryAt = 0;
         this.failures = 0;
         this.api.token = null;
+        this.needsRemoteValidation = true;
+        this.sourceDirty = true;
       }
       if (this.halted) return this.state;
-      const source = await this.stableRead(this.sourcePath);
-      const rendered = renderGuide(source, new Date(this.now()).toISOString());
-      this.state.lastLocalHash = rendered.sourceHash;
+      const changed = await this.refreshSource();
+      // An unchanged invalid save is not reread or published on every local poll.
+      if (!this.rendered) return this.state;
+      if (changed && this.state.liveVerificationDeferred && this.state.lastPublishedHash)
+        this.beginVerification();
       if (this.now() < this.retryAt) {
-        this.state.nextAttemptAt = new Date(this.retryAt).toISOString();
+        await this.verifyPendingLive();
         await this.persist();
         return this.state;
       }
-      const remote = await this.api.readRemote();
-      const recoveredPublication = this.state.pendingCommit && remote.commit === this.state.pendingCommit.sha;
-      this.state = reconcileRemoteState(this.state, remote);
-      if (recoveredPublication) this.state.lastPublishedAt = new Date(this.now()).toISOString();
-      if (!this.state.remoteCommit) {
-        if (remote.files['index.html'] !== rendered.indexBlobSha || remote.manifest.sourceHash !== rendered.sourceHash)
-          throw new SyncError('adoption-mismatch');
-        Object.assign(this.state, { remoteCommit: remote.commit, lastPublishedHash: rendered.sourceHash,
-          lastPublishedIndexBlobSha: rendered.indexBlobSha, lastPublishedAt: remote.manifest.updatedAt });
-      } else if (remote.manifest.sourceHash !== this.state.lastPublishedHash) throw new SyncError('remote-conflict');
-      if (this.state.lastPublishedIndexBlobSha && remote.files['index.html'] !== this.state.lastPublishedIndexBlobSha)
-        throw new SyncError('remote-conflict');
-      this.state.lastPublishedIndexBlobSha ??= remote.files['index.html'];
-      // Persist recovery/adoption before making any further remote changes.
-      await this.persist();
+      let remote = null;
+      const previouslyDue = Date.parse(this.state.lastPublishedAt) + MIN_PUBLICATION_INTERVAL_MS;
+      const eligibleSave = this.rendered.sourceHash !== this.state.lastPublishedHash && this.now() >= previouslyDue;
+      // GitHub is read only for one startup/resume validation, recovery, or an eligible write.
+      // Queued saves and public-deployment checks do not repeatedly inspect the branch.
+      if (this.needsRemoteValidation || this.state.pendingCommit || eligibleSave) {
+        remote = await this.api.readRemote();
+        const recoveredPublication = this.state.pendingCommit && remote.commit === this.state.pendingCommit.sha;
+        this.state = reconcileRemoteState(this.state, remote);
+        if (recoveredPublication) {
+          this.state.lastPublishedAt = new Date(this.now()).toISOString();
+          this.state.liveMatchesPublished = false;
+        }
+        if (!this.state.remoteCommit) {
+          if (remote.files['index.html'] !== this.rendered.indexBlobSha
+              || remote.manifest.sourceHash !== this.rendered.sourceHash)
+            throw new SyncError('adoption-mismatch');
+          Object.assign(this.state, { remoteCommit: remote.commit, lastPublishedHash: this.rendered.sourceHash,
+            lastPublishedIndexBlobSha: this.rendered.indexBlobSha, lastPublishedAt: remote.manifest.updatedAt });
+        } else if (remote.manifest.sourceHash !== this.state.lastPublishedHash) throw new SyncError('remote-conflict');
+        if (this.state.lastPublishedIndexBlobSha && remote.files['index.html'] !== this.state.lastPublishedIndexBlobSha)
+          throw new SyncError('remote-conflict');
+        this.state.lastPublishedIndexBlobSha ??= remote.files['index.html'];
+        if (this.needsRemoteValidation || recoveredPublication) this.beginVerification();
+        this.needsRemoteValidation = false;
+        // Persist recovery/adoption before making any further remote changes.
+        await this.persist();
+      }
       const earliest = Date.parse(this.state.lastPublishedAt) + MIN_PUBLICATION_INTERVAL_MS;
-      if (rendered.sourceHash !== this.state.lastPublishedHash && this.now() >= earliest) {
+      if (remote && this.rendered.sourceHash !== this.state.lastPublishedHash && this.now() >= earliest) {
+        const rendered = renderGuide(this.sourceBytes, new Date(this.now()).toISOString());
         if (await this.isPaused()) throw new SyncError('paused');
         const commit = await this.api.createGuideCommit(rendered, remote.commit);
         this.state.pendingCommit = { sha: commit, parentCommit: remote.commit, sourceHash: rendered.sourceHash,
@@ -472,26 +590,35 @@ export class GuideSync {
         Object.assign(this.state, { remoteCommit: commit, lastPublishedHash: rendered.sourceHash,
           lastPublishedIndexBlobSha: rendered.indexBlobSha, lastPublishedAt: new Date(this.now()).toISOString(),
           pendingCommit: null, liveMatchesPublished: false });
+        this.beginVerification();
         await this.persist();
       }
       this.failures = 0;
       this.retryAt = 0;
       this.state.lastError = null;
-      await this.verifyLive();
-      if (rendered.sourceHash !== this.state.lastPublishedHash) {
+      await this.verifyPendingLive();
+      if (this.rendered.sourceHash !== this.state.lastPublishedHash) {
         this.state.nextAttemptAt = new Date(earliest).toISOString();
         this.setStatus('saved-awaiting-publish', `The latest save is queued. Next publication is eligible at ${this.state.nextAttemptAt}.`);
       } else {
         this.state.nextAttemptAt = null;
-        this.setStatus(this.state.liveMatchesPublished ? 'live' : 'published-awaiting-live',
+        this.setStatus(this.state.liveMatchesPublished ? 'live'
+          : this.state.liveVerificationDeferred ? 'published-verification-deferred' : 'published-awaiting-live',
           this.state.liveMatchesPublished ? 'The public URL matches the latest saved guide.'
-            : 'GitHub contains the saved guide; waiting for the public URL to show it.');
+            : this.state.liveVerificationDeferred
+              ? 'GitHub contains the saved guide. Automatic website checks stopped after 20 minutes; resume, restart, or edit to check again.'
+              : 'GitHub contains the saved guide; bounded website checks are waiting for deployment.');
       }
       await this.persist();
     } catch (caught) {
       const error = caught instanceof SyncError ? caught : new SyncError('local-storage');
       const fixableSource = ['invalid-source', 'possible-credential', 'source-missing', 'source-unstable'].includes(error.code);
-      this.state.lastError = { code: error.code, at: new Date(this.now()).toISOString() };
+      if (this.state.lastError?.code !== error.code)
+        this.state.lastError = { code: error.code, at: new Date(this.now()).toISOString() };
+      if (fixableSource) {
+        this.rendered = null;
+        if (['source-unstable', 'source-missing'].includes(error.code)) this.sourceDirty = true;
+      }
       if (error.retryable && !fixableSource) {
         const delay = Math.max(error.retryAfterMs, Math.min(300_000, 5_000 * 2 ** Math.min(this.failures++, 6)));
         this.retryAt = this.now() + delay;
@@ -531,7 +658,7 @@ async function main() {
   if (command === '--resume') {
     await fs.unlink(path.join(SYNC_DIRECTORY, 'paused')).catch((error) => { if (error.code !== 'ENOENT') throw error; });
     await atomicWrite(path.join(SYNC_DIRECTORY, 'resume.request'), `${new Date().toISOString()}\n`);
-    console.log('Publication is enabled. A running watcher will resume within 20 seconds; otherwise start --watch.');
+    console.log('Publication is enabled. A running watcher will resume within 60 seconds; otherwise start --watch.');
     return;
   }
   if (command === '--status') {
@@ -549,37 +676,46 @@ async function main() {
       return;
     }
     console.log(`Automatic public guide publishing is active for ${SOURCE_PATH}. Saved content is public and retained in Git history.`);
+    console.log('Save notifications are active with a 60-second local metadata fallback. Settled idle guides make no network requests.');
     let busy = false;
     let queued = false;
     let closed = false;
     let debounce;
+    let nextWake;
     let watcher;
+    let sourceNotification = false;
     const run = async () => {
       if (closed) return;
       if (busy) { queued = true; return; }
+      clearTimeout(nextWake);
       busy = true;
-      try { await sync.tick(); }
+      const sourceChanged = sourceNotification;
+      sourceNotification = false;
+      try { await sync.tick({ sourceChanged }); }
       finally {
         busy = false;
-        if (queued && !closed) { queued = false; debounce = setTimeout(run, 1_500); }
+        if (!closed) {
+          if (queued) { queued = false; clearTimeout(debounce); debounce = setTimeout(run, 1_500); }
+          else nextWake = setTimeout(run, sync.nextWakeDelay());
+        }
       }
     };
-    const interval = setInterval(run, 20_000);
     try {
       watcher = watch(path.dirname(SOURCE_PATH), { persistent: false }, (_event, filename) => {
         if (filename && filename.toString().toLowerCase() !== path.basename(SOURCE_PATH).toLowerCase()) return;
+        sourceNotification = true;
         clearTimeout(debounce);
         debounce = setTimeout(run, 1_500);
       });
       watcher.on('error', () => {
-        console.log('Directory notifications are unavailable; the 20-second save check remains active.');
+        console.log('Directory notifications are unavailable; the 60-second local metadata fallback remains active.');
         watcher.close();
       });
-    } catch { console.log('Directory notifications are unavailable; the 20-second save check remains active.'); }
+    } catch { console.log('Directory notifications are unavailable; the 60-second local metadata fallback remains active.'); }
     const stopped = new Promise((resolve) => {
       const stop = () => {
         closed = true;
-        clearInterval(interval);
+        clearTimeout(nextWake);
         clearTimeout(debounce);
         watcher?.close();
         resolve();

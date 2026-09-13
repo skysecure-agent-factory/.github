@@ -20,7 +20,15 @@ powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File .guide-sync/contro
 
 `Install` registers the hidden, limited-permission current-user logon task. `Uninstall` pauses syncing and removes that task without deleting the guide or public history. The process-level execution-policy option does not change machine policy; organization policy still takes precedence.
 
-Saving the master publishes publicly. Pause before confidential drafting. The computer must be awake, signed in, and online to send updates; the website remains available while the computer is offline. Continuous saves are combined into at most one upload every 390 seconds, followed by GitHub Pages deployment. Open guide pages check for new versions every minute.
+Saving the master publishes publicly. Pause before confidential drafting. The computer must be awake, signed in, and online to send updates; the website remains available while the computer is offline. Continuous saves are combined into at most one upload every 390 seconds, followed by GitHub Pages deployment. A foreground guide page checks its small version file at most once every five minutes, including when returning to the tab; hidden tabs do not poll. Reopening or refreshing the page also loads the published guide, subject to normal browser/CDN caching.
+
+## Save-driven behavior
+
+- File-save notifications trigger synchronization after a short settling delay. A once-a-minute **local metadata check** catches missed notifications; unchanged files are not repeatedly read in full.
+- Once the current publication is verified, idle operation makes **no GitHub or public-site requests** and does not repeatedly rewrite local state. Startup/resume checks the remote baseline once. Remote conflict checks still run immediately before an eligible publication; saves waiting for the publication interval do not repeatedly contact GitHub.
+- After an upload, only public-site verification is retried, with increasing delays. It stops as soon as the version and served HTML match. If verification cannot complete within twenty minutes, the helper records that it is deferred and stops those requests; a new edit, restart, or Resume starts a fresh verification opportunity. This does not roll back or disable the already-published website.
+- Offline publishing retries use backoff and preserve the latest save. Durable pending-publication records and non-forced branch updates remain in place so uncertain responses can be reconciled safely.
+- State timestamps record meaningful work, **not a continuous heartbeat**. An old `lastCheckedAt` can be normal while idle; use Status to inspect the actual local publisher process.
 
 Pages uses `guide-live` and `/`, not `prod` or `/docs`. Keep `guide-live` as a long-lived publishing branch. Only `index.html`, `.nojekyll`, and `guide-version.json` are allowed there. Do not edit them independently: the helper blocks on a remote conflict instead of overwriting it. An existing installation's saved baseline must be preserved during helper updates; inspect conflicts before reconciling state. A new installation adopts the remote branch only when its rendered local master matches the remote guide.
 
