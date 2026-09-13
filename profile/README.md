@@ -9,7 +9,7 @@
 <p align="center">
   <a href="#the-factory">Our mission</a> ·
   <a href="#three-implementation-approaches">Approaches</a> ·
-  <a href="#business-capabilities">Agent portfolio</a> ·
+  <a href="#developer-guide">Developer guide</a> ·
   <a href="#engineering-together">Engineering standards</a>
 </p>
 
@@ -39,37 +39,19 @@ Choose the approach that fits the business workflow, customer environment, and o
 
 Availability is **agent-specific**. An approach listed here does not mean every agent supports it today. Open-source delivery is a roadmap direction; model suitability, licensing, security, and infrastructure requirements must be validated before release.
 
-## Business capabilities
+## Developer guide
 
-| Capability | Business focus | Current repository approaches |
+**Every developer must use the [SkySecure AI Agent Engineering and Production Guide](https://skysecure-agent-factory.github.io/.github/) as the working reference for building and releasing agents.**
+
+The standard applies across business use cases and implementation approaches, including new agents added to this organization. It covers architecture, security, tenant isolation, data integrity, testing, reliability, deployment, and operations.
+
+| Start with a verified scope | Build with evidence | Release against the standard |
 |---|---|---|
-| **Invoice Processing** | Purchase-order and invoice workflows, reconciliation, exceptions, and reporting. | Copilot |
-| **Recruitment** | Candidate screening, recruitment coordination, and interview workflows. | Copilot · Foundry |
-| **Employee Lifecycle** | Employee-related workflows across lifecycle events. | Copilot |
-| **Sales and Deals** | Sales coordination and deal-related business workflows. | Copilot |
-| **IT Support** | Support requests, knowledge assistance, and ticket workflows. | Copilot · Foundry |
-| **Meeting Minutes** | Meeting follow-up, summaries, and supporting scheduled work. | Copilot · Foundry |
-| **Microsoft Licensing** | Licensing requirements, comparisons, and proposal assistance. | Direct OpenAI implementation |
+| Complete [Step 0: project profile](https://skysecure-agent-factory.github.io/.github/#step-0) and identify which controls apply. | Implement the applicable controls and retain test, evaluation, and recovery evidence with the project. | Complete [Step 23: final release gate](https://skysecure-agent-factory.github.io/.github/#step-23); resolve applicable blockers before approval. |
 
-These are engineering capabilities, not a declaration that every implementation is available or production-approved. Source repositories are access-controlled; access is granted through the approved internal process.
+Following the guide is required; it is not a guarantee that checks pass. Production approval requires verified results for the actual agent, customer environment, and release. Keep customer data and confidential project evidence in approved access-controlled locations.
 
-<details>
-<summary><strong>Repository directory — current agent names</strong></summary>
-
-| Capability | Repository names |
-|---|---|
-| Invoice Processing | `af-be-invoice-processing-agent-copilot` |
-| Recruitment | `af-be-recruitment-agent-copilot`<br />`af-be-recruitment-agent-foundry` |
-| Employee Lifecycle | `af-be-employee-lifecycle-agent-copilot` |
-| Sales and Deals | `af-be-sales-and-deals-agent-copilot` |
-| IT Support | `af-be-it-support-agent-copilot`<br />`af-be-it-support-agent-foundry` |
-| Meeting Minutes | `af-be-meeting-minutes-agent-copilot`<br />`af-be-meeting-minutes-agent-foundry` |
-| Meeting Minutes scheduled workers | `af-be-meeting-minutes-agent-copilot-cron`<br />`af-be-meeting-minutes-agent-foundry-cron` |
-| Microsoft Licensing | `af-be-microsoft-licensing-agent-openai` |
-
-The `openai` suffix identifies the existing direct-OpenAI licensing implementation. It is an explicit implementation exception—not another name for Foundry or open-source models.
-
-</details>
+The HTML guide has one stable URL. To update it, edit [`docs/index.html`](https://github.com/skysecure-agent-factory/.github/blob/prod/docs/index.html) in the profile repository and submit a PR to `prod`. After approval and merge, GitHub Pages republishes the guide at the same address. Saving an uncommitted local file does not publish it.
 
 ## From use case to deployment
 
@@ -100,7 +82,7 @@ af-{layer}-{business-name}-agent-{approach}
 | `agent` | Identifies the product as an agent |
 | Approach | `copilot`, `foundry`, or `opensource`; document approved exceptions |
 
-Examples: `af-be-invoice-processing-agent-copilot` and `af-be-recruitment-agent-foundry`. A future frontend would follow the same pattern with `fe`.
+Illustrative names: `af-be-customer-service-agent-copilot` and `af-be-customer-service-agent-foundry`. A frontend follows the same pattern with `fe`; approved implementation exceptions must be documented by the repository owner.
 
 Keep environment names and developer names out of agent repository names. `.github`, governance, and genuinely shared platform repositories have separate purposes and are not forced into the agent naming pattern.
 
@@ -133,7 +115,7 @@ An agent's API and scheduled worker may share a repository while running as sepa
 
 Where Azure Container Apps Jobs is the selected runtime, scheduled work uses its configured job trigger; time-based schedules use cron. Keep ownership, retries, duplicate protection, and schedule configuration explicit.
 
-The existing Meeting Minutes `-cron` repositories remain separate until a deliberate consolidation is implemented and validated. They are not a naming requirement for every new agent.
+Existing `-cron` repositories remain separate until a deliberate consolidation is implemented and validated. They are not a naming requirement for every new agent.
 
 ### A shared quality bar
 
