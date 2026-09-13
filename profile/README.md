@@ -51,8 +51,6 @@ The standard applies across business use cases and implementation approaches, in
 
 Following the guide is required; it is not a guarantee that checks pass. Production approval requires verified results for the actual agent, customer environment, and release. Keep customer data and confidential project evidence in approved access-controlled locations.
 
-The guide has one stable URL. Its designated owner edits [`docs/index.html`](https://github.com/skysecure-agent-factory/.github/blob/prod/docs/index.html) on a task branch, raises a PR into `prod`, and merges after automated guide checks pass. Each merge deploys the public guide through GitHub Actions and GitHub Pages, without a laptop publisher or manual upload. This documentation repository does not require a separate human approval; application repositories keep their own review and release rules. Foreground guide pages check for updates at most once every five minutes; hidden tabs do not poll. Allow time for deployment, then refresh or reopen the same URL if needed. This repository and its PRs are public: never commit confidential information, even on an unmerged branch.
-
 ## From use case to deployment
 
 **Define → Build → Validate → Review → Deploy → Operate**
