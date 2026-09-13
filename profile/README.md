@@ -7,133 +7,178 @@
 </p>
 
 <p align="center">
-  <a href="#the-factory">Our mission</a> ·
-  <a href="#three-implementation-approaches">Approaches</a> ·
-  <a href="#developer-guide">Developer guide</a> ·
+  <a href="#the-factory">Our mission</a> &nbsp; · &nbsp;
+  <a href="#three-implementation-approaches">Approaches</a> &nbsp; · &nbsp;
+  <a href="#developer-guide">Developer guide</a> &nbsp; · &nbsp;
   <a href="#engineering-together">Engineering standards</a>
 </p>
 
----
+<br />
 
 ## The factory
 
-**SkySecure Agent Factory is where focused business use cases become purpose-built AI agents for Realize.**
+**Purpose-built AI agents for real business needs, delivered through Realize.**
 
-We start with a specific business need, define the expected outcome, build the agent and its integrations, and validate the complete workflow. Realize is the destination for packaging and delivering those agents through an automated deployment experience.
+We turn a focused business use case into a complete, supported workflow: define a measurable outcome, build the agent and its integrations, and validate the end-to-end experience. Realize brings those agents to customers through automated deployment.
 
-Our aim is a repeatable path from a useful idea to an agent that can be deployed, supported, and improved.
-
-| Start with the business | Engineer the whole workflow | Deliver through Realize |
-|---|---|---|
-| Define the users, problem, boundaries, and measurable outcome. | Build the agent, integrations, access controls, tests, and operational behavior. | Package configuration and permissions, validate deployment, and establish ownership. |
+<br />
 
 ## Three implementation approaches
 
-Choose the approach that fits the business workflow, customer environment, and operating requirements.
+One business outcome. An implementation that fits the customer's environment.
 
-| Approach | What it means | Repository keyword |
-|---|---|---|
-| **Microsoft Copilot** | Agents built around the Microsoft Copilot ecosystem and its supported integration surfaces. | `copilot` |
-| **Microsoft Foundry** | Agents using Microsoft's Azure-hosted AI models and services, including Azure OpenAI. | `foundry` |
-| **Open-source models** | A planned approach using selected open-source or open-weight models, with licensing and hosting requirements evaluated per model. | `opensource` |
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <h3>Copilot</h3>
+      <p>Agents built around Microsoft Copilot and its supported integrations.</p>
+      <p><code>copilot</code></p>
+    </td>
+    <td width="33%" valign="top">
+      <h3>Foundry</h3>
+      <p>Agents powered by Microsoft's Azure-hosted AI models and services.</p>
+      <p><code>foundry</code></p>
+    </td>
+    <td width="33%" valign="top">
+      <h3>Open source</h3>
+      <p>Agents using selected open-source or open-weight models.</p>
+      <p><code>opensource</code> · Roadmap</p>
+    </td>
+  </tr>
+</table>
 
-Availability is **agent-specific**. An approach listed here does not mean every agent supports it today. Open-source delivery is a roadmap direction; model suitability, licensing, security, and infrastructure requirements must be validated before release.
+Availability varies by agent. Open-source delivery is planned; model suitability, licensing, security, and hosting must be validated before release.
+
+<br />
 
 ## Developer guide
 
-**Every developer must use the [SkySecure AI Agent Engineering and Production Guide](https://skysecure-agent-factory.github.io/.github/) as the working reference for building and releasing agents.**
+> [!IMPORTANT]
+> **Every developer must use the engineering guide when building or releasing an agent.**
+>
+> [Open the SkySecure AI Agent Engineering and Production Guide →](https://skysecure-agent-factory.github.io/.github/)
 
-The standard applies across business use cases and implementation approaches, including new agents added to this organization. It covers architecture, security, tenant isolation, data integrity, testing, reliability, deployment, and operations.
+1. **Define the scope.** Complete [Step 0: project profile](https://skysecure-agent-factory.github.io/.github/#step-0) and identify the applicable controls.
 
-| Start with a verified scope | Build with evidence | Release against the standard |
-|---|---|---|
-| Complete [Step 0: project profile](https://skysecure-agent-factory.github.io/.github/#step-0) and identify which controls apply. | Implement the applicable controls and retain test, evaluation, and recovery evidence with the project. | Complete [Step 23: final release gate](https://skysecure-agent-factory.github.io/.github/#step-23); resolve applicable blockers before approval. |
+2. **Build with evidence.** Validate functionality, security, tenant isolation, data integrity, reliability, and recovery.
 
-Following the guide is required; it is not a guarantee that checks pass. Production approval requires verified results for the actual agent, customer environment, and release. Keep customer data and confidential project evidence in approved access-controlled locations.
+3. **Check the release.** Complete [Step 23: final release gate](https://skysecure-agent-factory.github.io/.github/#step-23) and resolve applicable blockers.
 
-## From use case to deployment
+The guide applies to every agent and approach. Production approval depends on verified results for the actual release and customer environment—not a successful build alone. Keep confidential evidence in approved, access-controlled locations.
+
+<br />
+
+## From idea to production
 
 **Define → Build → Validate → Review → Deploy → Operate**
 
-1. **Define:** agree on the business outcome, data boundaries, acceptance criteria, and owner.
-2. **Build:** implement the agent and integrations on a focused task branch.
-3. **Validate:** test functionality, authorization, data integrity, failure recovery, and configuration.
-4. **Review:** submit a pull request with test evidence and any deployment or migration impact.
-5. **Deploy:** use the approved delivery workflow and environment-specific configuration; complete required consent and access setup.
-6. **Operate:** verify the deployed outcome, monitor failures, and maintain a practical rollback or recovery path.
+Each release needs clear ownership, test evidence, customer authorization, correct permissions, and a verified deployment outcome. Use the approved release workflow, monitor the result, and maintain a practical recovery path.
 
-Automated deployment does not remove the need for customer authorization, correct permissions, or environment validation. Production readiness is demonstrated by evidence for that agent and deployment—not by its repository name or a successful build alone.
+<br />
 
 ## Engineering together
 
-### A consistent repository name
+Consistent conventions keep collaboration simple as the factory grows. **Expand a topic for the working standard.**
+
+<br />
+
+<details>
+<summary><strong>01 &nbsp; Repository naming</strong> — a clear name for every agent</summary>
+
+<br />
 
 ```text
 af-{layer}-{business-name}-agent-{approach}
 ```
 
-| Part | Standard |
+- **Layer:** `be` for backend; `fe` for frontend.
+- **Business name:** a clear capability in lowercase, hyphen-separated words.
+- **Approach:** `copilot`, `foundry`, or `opensource`.
+
+Example: `af-be-customer-service-agent-copilot`.
+
+Keep environment and developer names out of repository names. Repository owners must document approved exceptions. `.github`, governance, and shared platform repositories serve separate purposes and do not need the agent naming pattern.
+
+</details>
+
+<br />
+
+<details>
+<summary><strong>02 &nbsp; Task branches and pull requests</strong> — one task, one focused change</summary>
+
+<br />
+
+Start from the latest `dev` → create a task branch → commit and test → open a PR into `dev` → review and merge → delete the merged task branch after checking dependencies.
+
+| Branch | Use |
 |---|---|
-| `af` | Agent Factory namespace |
-| Layer | `be` for backend; `fe` for frontend |
-| Business name | Clear business capability in lowercase, hyphen-separated words |
-| `agent` | Identifies the product as an agent |
-| Approach | `copilot`, `foundry`, or `opensource`; document approved exceptions |
+| `feature/<task>` | New functionality |
+| `fix/<issue>` | Defect correction |
+| `docs/<task>` | Documentation |
+| `chore/<task>` | Maintenance |
 
-Illustrative names: `af-be-customer-service-agent-copilot` and `af-be-customer-service-agent-foundry`. A frontend follows the same pattern with `fe`; approved implementation exceptions must be documented by the repository owner.
+A task can include several commits and collaborators. Create a new branch for the next task instead of accumulating unrelated work on permanent personal branches. Include test evidence and any deployment or migration impact in the PR.
 
-Keep environment names and developer names out of agent repository names. `.github`, governance, and genuinely shared platform repositories have separate purposes and are not forced into the agent naming pattern.
+Keep `dev` long-lived. Retain `prod`, `test`, or other established environment branches while the configured workflow needs them; never delete them during task cleanup. Profile and governance repositories follow their own configured default branches.
 
-### One task. One branch. One reviewed change.
+</details>
 
-| Branch | Purpose | Lifecycle |
-|---|---|---|
-| `dev` | Default integration branch for agent development and validation. | Long-lived |
-| `prod` | Approved production delivery, **where configured** by the repository's release model. | Long-lived where used |
-| `test` or another agreed environment branch | A dedicated role required by an established workflow—not a default requirement. | Retain while its workflow depends on it |
-| `feature/<task>` | One focused feature. | Delete after merge and dependency checks |
-| `fix/<issue>` | One focused defect correction. | Delete after merge and dependency checks |
-| `docs/<task>` or `chore/<task>` | Focused documentation or maintenance work. | Delete after merge and dependency checks |
+<br />
 
-**The normal development loop:** start from the latest `dev` → create a task branch → commit and test → open a PR into `dev` → review and merge → delete the merged task branch.
+<details>
+<summary><strong>03 &nbsp; Environments and releases</strong> — deliberate promotion to production</summary>
 
-A task can contain several commits, and several developers can collaborate on it. Use a new branch for the next task; avoid permanent personal branches that accumulate unrelated work. Never delete long-lived branches as part of routine task cleanup. The public profile and governance repositories follow their own configured default branches.
+<br />
 
-This public documentation repository uses `prod` as its release branch. The earlier `guide-live` branch is retained only as a migration recovery copy; it is no longer a publishing source.
-
-### Separate environments, deliberate releases
-
-- Keep development and production configuration, credentials, permissions, and state appropriately isolated.
-- Use the repository's approved release path. Promote to `prod` only where that branch is part of the configured deployment workflow.
-- Make deployments reproducible and verify the resulting application behavior. Document rollback, migration, and recovery requirements.
+- Isolate development and production configuration, credentials, permissions, and state.
+- Use the approved release path; promote to `prod` only where that branch is part of the configured workflow.
+- Make deployment reproducible. Verify application behavior and document rollback, migration, and recovery requirements.
 - Coordinate repository or branch renames with deployment identities, workflow references, integrations, and owners.
-- Required reviews, checks, and protection settings must be configured and verified for the repository and supported GitHub plan. Documentation alone does not enforce them.
+- Configure and verify required reviews, checks, and protections on the supported GitHub plan. Documentation alone does not enforce them.
 
-### Clear boundaries for scheduled work
+</details>
 
-An agent's API and scheduled worker may share a repository while running as separate deployment resources. Sharing source code does not mean they share a running process.
+<br />
 
-Where Azure Container Apps Jobs is the selected runtime, scheduled work uses its configured job trigger; time-based schedules use cron. Keep ownership, retries, duplicate protection, and schedule configuration explicit.
+<details>
+<summary><strong>04 &nbsp; Scheduled workers</strong> — shared source, independent runtime</summary>
 
-Existing `-cron` repositories remain separate until a deliberate consolidation is implemented and validated. They are not a naming requirement for every new agent.
+<br />
 
-### A shared quality bar
+An agent's API and scheduled worker may share a repository while running as separate deployment resources. Sharing code does not mean sharing a running process.
 
-| Area | Expected before release |
-|---|---|
-| **Security & privacy** | Least-privilege access, tenant and role boundaries, protected secrets, and no sensitive data in source or logs. |
-| **Correctness** | Tests and acceptance evidence for business rules, integrations, and data integrity. |
-| **Reliability** | Bounded retries, safe duplicate handling, meaningful health signals, and recovery behavior. |
-| **Delivery** | Reviewed changes, environment validation, owned configuration, and a verified release path. |
-| **Ownership** | A responsible team, useful documentation, and a clear support and escalation path. |
+Where Azure Container Apps Jobs is the selected runtime, use its configured job trigger; time-based schedules use cron. Make schedule ownership, configuration, retries, and duplicate protection explicit.
 
-### Access and collaboration
+Existing `-cron` repositories remain separate until consolidation is implemented and validated. A separate cron repository is not required for every new agent.
 
-Use team-based access with the least privilege required. Developers need contribution access; designated repository administrators manage sensitive settings and deployment environments. GitHub permissions and cloud permissions are separate responsibilities.
+</details>
 
-Never include customer data, secrets, private infrastructure identifiers, or confidential operational details in public documentation. For source access, onboarding, or support, use the approved internal channel and contact the relevant repository owner.
+<br />
+
+<details>
+<summary><strong>05 &nbsp; Quality, security, and ownership</strong> — evidence before release</summary>
+
+<br />
+
+- **Security and privacy:** least privilege, tenant and role boundaries, protected secrets, and no sensitive data in source or logs.
+- **Correctness:** tested business rules, integrations, and data integrity, backed by acceptance evidence.
+- **Reliability:** bounded retries, safe duplicate handling, meaningful health signals, and verified recovery behavior.
+- **Delivery:** reviewed changes, validated environments, owned configuration, and a verified release path.
+- **Ownership:** a responsible team, useful documentation, and a clear support and escalation path.
+
+Use team-based access with the least privilege required. Designated administrators manage sensitive repository settings and deployment environments. GitHub access and cloud permissions are separate responsibilities.
+
+</details>
+
+<br />
 
 ---
+
+**Need access or support?** Contact the repository owner through the approved internal channel.
+
+This page is public. Never publish customer data, secrets, private infrastructure identifiers, or confidential operational details here.
+
+<br />
 
 <p align="center">
   <strong>SkySecure Agent Factory · Realize</strong><br />
