@@ -51,7 +51,7 @@ The standard applies across business use cases and implementation approaches, in
 
 Following the guide is required; it is not a guarantee that checks pass. Production approval requires verified results for the actual agent, customer environment, and release. Keep customer data and confidential project evidence in approved access-controlled locations.
 
-The HTML guide has one stable URL. To update it, edit [`docs/index.html`](https://github.com/skysecure-agent-factory/.github/blob/prod/docs/index.html) in the profile repository and submit a PR to `prod`. After approval and merge, GitHub Pages republishes the guide at the same address. Saving an uncommitted local file does not publish it.
+The guide has one stable URL. Its designated owner edits the local master `SKYSECURE_AI_AGENT_ENGINEERING_AND_PRODUCTION_GUIDE.html`; the guide-only sync helper automatically publishes saved changes through the [`guide-live` branch](https://github.com/skysecure-agent-factory/.github/tree/guide-live) while running and online. Allow for publishing delay; frequent saves are combined to respect hosting limits. Open guide pages check for updates every minute. Saving this master publishes publicly—pause synchronization while drafting confidential or unapproved material. This owner-managed documentation publishing path does not change application PR requirements or the protected profile branch.
 
 ## From use case to deployment
 
@@ -100,6 +100,8 @@ Keep environment names and developer names out of agent repository names. `.gith
 **The normal development loop:** start from the latest `dev` → create a task branch → commit and test → open a PR into `dev` → review and merge → delete the merged task branch.
 
 A task can contain several commits, and several developers can collaborate on it. Use a new branch for the next task; avoid permanent personal branches that accumulate unrelated work. Never delete long-lived branches as part of routine task cleanup. The public profile and governance repositories follow their own configured default branches.
+
+`guide-live` is a dedicated, long-lived documentation publishing branch, not an agent development branch. Do not delete it as part of task-branch cleanup.
 
 ### Separate environments, deliberate releases
 
