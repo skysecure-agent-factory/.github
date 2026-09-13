@@ -51,7 +51,7 @@ The standard applies across business use cases and implementation approaches, in
 
 Following the guide is required; it is not a guarantee that checks pass. Production approval requires verified results for the actual agent, customer environment, and release. Keep customer data and confidential project evidence in approved access-controlled locations.
 
-The guide has one stable URL. Its designated owner edits the local master `SKYSECURE_AI_AGENT_ENGINEERING_AND_PRODUCTION_GUIDE.html`; the guide-only sync helper automatically publishes saved changes through the [`guide-live` branch](https://github.com/skysecure-agent-factory/.github/tree/guide-live) while running and online. Publishing is save-triggered: once an update is verified, the helper makes no idle network checks. Allow for publishing delay; frequent saves are combined to respect hosting limits. Foreground guide pages check for updates at most once every five minutes; hidden tabs do not poll. Saving this master publishes publicly—pause synchronization while drafting confidential or unapproved material. This owner-managed documentation publishing path does not change application PR requirements or the protected profile branch.
+The guide has one stable URL. Its designated owner edits [`docs/index.html`](https://github.com/skysecure-agent-factory/.github/blob/prod/docs/index.html) on a task branch, raises a PR into `prod`, and merges after automated guide checks pass. Each merge deploys the public guide through GitHub Actions and GitHub Pages, without a laptop publisher or manual upload. This documentation repository does not require a separate human approval; application repositories keep their own review and release rules. Foreground guide pages check for updates at most once every five minutes; hidden tabs do not poll. Allow time for deployment, then refresh or reopen the same URL if needed. This repository and its PRs are public: never commit confidential information, even on an unmerged branch.
 
 ## From use case to deployment
 
@@ -101,7 +101,7 @@ Keep environment names and developer names out of agent repository names. `.gith
 
 A task can contain several commits, and several developers can collaborate on it. Use a new branch for the next task; avoid permanent personal branches that accumulate unrelated work. Never delete long-lived branches as part of routine task cleanup. The public profile and governance repositories follow their own configured default branches.
 
-`guide-live` is a dedicated, long-lived documentation publishing branch, not an agent development branch. Do not delete it as part of task-branch cleanup.
+This public documentation repository uses `prod` as its release branch. The earlier `guide-live` branch is retained only as a migration recovery copy; it is no longer a publishing source.
 
 ### Separate environments, deliberate releases
 

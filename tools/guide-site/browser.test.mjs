@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 
-const guidePath=process.argv[2] || new URL('../SKYSECURE_AI_AGENT_ENGINEERING_AND_PRODUCTION_GUIDE.html',import.meta.url);
+const guidePath=new URL('../../docs/index.html',import.meta.url);
 const html=await readFile(guidePath,'utf8');
 const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
 const refresh=scripts.at(-1)[1];
