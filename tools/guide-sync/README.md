@@ -4,7 +4,7 @@ This folder contains the reviewed source for the document owner's local sync hel
 
 ## Installed layout
 
-The current installation keeps these three files in `<workspace>/.guide-sync/`: `sync.mjs`, `sync.test.mjs`, and `control.ps1`. The editable master is `<workspace>/SKYSECURE_AI_AGENT_ENGINEERING_AND_PRODUCTION_GUIDE.html`. Runtime state stays in that local helper directory and must not be committed or copied between publishers.
+The current installation keeps these four files in `<workspace>/.guide-sync/`: `sync.mjs`, `sync.test.mjs`, `control.ps1`, and `run.ps1`. The editable master is `<workspace>/SKYSECURE_AI_AGENT_ENGINEERING_AND_PRODUCTION_GUIDE.html`. Runtime state stays in that local helper directory and must not be committed or copied between publishers.
 
 Requirements: Windows, Node.js 24 at the path configured in `control.ps1`, Git available on PATH, and an existing Git Credential Manager sign-in with access to this repository. Credentials are read into memory; the helper does not save them. The existing credential may have broader permissions, but the helper's publication operations target only this repository's `guide-live` branch and its three guide files.
 
@@ -24,7 +24,7 @@ Saving the master publishes publicly. Pause before confidential drafting. The co
 
 Pages uses `guide-live` and `/`, not `prod` or `/docs`. Keep `guide-live` as a long-lived publishing branch. Only `index.html`, `.nojekyll`, and `guide-version.json` are allowed there. Do not edit them independently: the helper blocks on a remote conflict instead of overwriting it. An existing installation's saved baseline must be preserved during helper updates; inspect conflicts before reconciling state. A new installation adopts the remote branch only when its rendered local master matches the remote guide.
 
-Changes to this helper and the organization profile still use reviewed PRs. After review, pause the installed helper, copy only the three source files to the installed helper directory without replacing its state, then resume it. Do not run a second publisher for the same guide.
+Changes to this helper and the organization profile still use reviewed PRs. After review, pause the installed helper, copy only the four source files to the installed helper directory without replacing its state, run `Install` to update the launcher, then resume it. Do not run a second publisher for the same guide.
 
 ## Local checks
 
