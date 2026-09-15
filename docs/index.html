@@ -2407,7 +2407,7 @@ input:focus-visible {
         </label>
         <nav class="guide-toc" id="guide-toc" aria-label="Phases and steps"></nav>
         <p class="toc-empty" id="toc-empty">No matching phase or step</p>
-        <div class="sidebar-footer"><span>5 phases</span><span>24 steps</span></div>
+        <div class="sidebar-footer"><span>6 phases</span><span>25 steps</span></div>
     </aside>
     <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
 
@@ -2415,41 +2415,62 @@ input:focus-visible {
         <section class="guide-hero" aria-labelledby="skysecure-engineering-production-ready-ai-agent-development-guide">
         <div class="guide-kicker">Skysecure Engineering standard</div>
         <h1 id="skysecure-engineering-production-ready-ai-agent-development-guide" tabindex="-1">Skysecure Engineering - Production Ready AI Agent Development Guide</h1>
-<div class="guide-meta" aria-label="Guide summary"><span>Production-ready agents</span><span>5 engineering phases</span><span>24 accountable steps</span></div>
+<div class="guide-meta" aria-label="Guide summary"><span>Production-ready agents</span><span>6 engineering phases</span><span>25 accountable steps</span></div>
 <p>You are operating within the <strong>Skysecure Engineering</strong> ecosystem.</p>
 <blockquote>
-<p><strong>Build agents that are secure, portable across client tenants, reliable during failure, and ready to operate—not merely ready for a local demo.</strong></p>
+<p><strong>Build agents that protect client data, work in different client environments, recover from failures, and can be supported in production—not just shown in a local demo.</strong></p>
 </blockquote>
-<p>A local demo proves that an idea can work. Production readiness proves that the same solution works safely, repeatedly, at scale, and inside a clean client environment.</p>
-<p>This guide takes a developer from the first business requirement through architecture, implementation, security, testing, deployment, monitoring, and recovery. Use the simplest safe design and apply conditional guidance only when that capability exists.</p>
+<p>A local demo shows that an idea can work. Before production, prove that the solution works safely, handles repeated requests and the expected load, and runs in a fresh client environment.</p>
+<p>This guide covers the full journey: understand the business need, design and build the agent, secure and test it, deploy it, monitor it, and recover from failures. Use the simplest safe design. Follow a conditional section when your agent uses that capability.</p>
         </section>
 <h2 id="how-developers-use-this-guide" tabindex="-1">How developers use this guide</h2>
-<p>This is a working engineering reference. You do not need to reread every page for every code change, but every requirement that applies to the project remains part of its production standard.</p>
+<p>Use this guide while building and reviewing an agent. You do not need to read every page again for a small change, but you must still meet every requirement that applies to your project.</p>
 <ol>
-<li><strong>Copy and complete <a href="#step-0">Step 0</a>.</strong> Establish the verified project profile before choosing or reviewing the implementation.</li>
-<li><strong>Follow the applicable engineering steps.</strong> Use the <a href="#step-0-applicability">applicability map</a> and the phase navigation to reach the relevant controls.</li>
-<li><strong>Collect evidence while building.</strong> Keep tests, evaluations, configuration, deployment proof, and operating records with the project rather than reconstructing them at release time.</li>
-<li><strong>Finish with <a href="#step-23">Step 23</a>.</strong> Record the release decision only after every applicable outcome has evidence.</li>
+<li><strong>Copy and complete <a href="#step-0">Step 0</a>.</strong> Confirm what your agent does and what it needs before choosing or reviewing the code.</li>
+<li><strong>Follow the steps that apply.</strong> Use the <a href="#step-0-applicability">applicability map</a> and phase navigation to find the requirements for your agent.</li>
+<li><strong>Save proof as you work.</strong> Keep test results, AI evaluations, configuration, deployment checks, and operating records with the project. Do not leave this until release time.</li>
+<li><strong>Prepare the <a href="#step-24">autodeployment handoff</a> when needed, then complete <a href="#step-23">the final production check</a>.</strong> Make the release decision only when every applicable outcome has evidence. The handoff checklist is in Phase 6 for easy reference, but you must complete it before deployment—not after going live.</li>
 </ol>
 <blockquote>
 <p><strong>Important:</strong>
-Navigation shortcuts change the reading order only. They never waive an applicable security, privacy, reliability, testing, or release requirement.</p>
+Navigation links help you find a section. They do not let you skip any security, privacy, reliability, testing, or release requirement that applies to your agent.</p>
 </blockquote>
-<p><strong>Engineering path:</strong> <code>PROFILE → DESIGN → BUILD → SECURE → TEST → DEPLOY → OPERATE</code></p>
-<p>Complete <strong>Step 0</strong> before designing, generating, approving, or materially changing code. For an existing project, inspect the repository only as needed to establish the verified profile before beginning the production review.</p>
+<p><strong>Engineering path:</strong> <code>PROFILE → DESIGN → BUILD → SECURE → TEST → HAND OFF → DEPLOY → OPERATE</code></p>
+<p>Complete <strong>Step 0</strong> before designing, generating, approving, or making a significant change to code. For an existing project, first inspect enough of the repository to confirm the project profile. Then begin the production review.</p>
 <blockquote>
-<p><strong>Publication control:</strong> This guide has <a href="https://skysecure-agent-factory.github.io/.github/">one permanent public URL</a>. Its source of truth is <a href="https://github.com/skysecure-agent-factory/.github/blob/prod/docs/index.html"><code>docs/index.html</code> in the organization documentation repository</a>. Make changes on a task branch, raise a pull request into <code>prod</code>, and merge after the automated guide checks pass. This documentation repository does not require a separate human approval; the authorized owner controls publication. Each merge into <code>prod</code> automatically builds and deploys the guide through GitHub Actions and GitHub Pages. Saving a local file alone does not publish, and deployment does not depend on a laptop staying online. Allow time for the deployment to complete. Foreground guide pages check for a new published version at most once every five minutes; hidden tabs do not poll. Developers can also refresh or reopen this same URL. Application repositories retain their own PR, review, and release requirements. This repository, its branches, and its pull requests are public: keep customer information, secrets, internal catalogues, and project evidence in approved access-controlled locations. Assign document ownership, maintain version and review records, and use Git history to recover earlier guide revisions.</p>
+<p><strong>Publication control:</strong> This guide has <a href="https://skysecure-agent-factory.github.io/.github/">one permanent public URL</a>. Edit the main source file, <a href="https://github.com/skysecure-agent-factory/.github/blob/prod/docs/index.html"><code>docs/index.html</code> in the organization documentation repository</a>, on a task branch. Raise a pull request into <code>prod</code> and merge after the automated guide checks pass. The authorized owner controls publication; this documentation repository does not require a separate human approval.</p>
+<p>Each merge into <code>prod</code> builds and publishes the guide through GitHub Actions and GitHub Pages. Saving a local file does not publish it, and your laptop does not need to stay online. Wait for deployment to finish. Visible guide pages check for updates at most once every five minutes; hidden tabs do not poll. Developers can also refresh or reopen the same URL.</p>
+<p>Application repositories keep their own PR, review, and release rules. This documentation repository, its branches, and its pull requests are public. Keep customer information, secrets, internal catalogues, and project evidence in approved access-controlled locations. Assign a guide owner, keep version and review records, and use Git history to recover earlier versions.</p>
 </blockquote>
 <blockquote>
 <p><strong>Requirement language</strong></p>
 <ul>
-<li><strong>Must:</strong> Required for release when the section applies.</li>
-<li><strong>Should:</strong> The expected default unless a documented reason justifies another safe approach.</li>
+<li><strong>Must:</strong> You must meet this requirement before release when the section applies.</li>
+<li><strong>Should:</strong> Follow this default unless you document why another safe approach is appropriate.</li>
 <li><strong>May:</strong> Optional.</li>
-<li><strong>Direct commands:</strong> <strong>Use</strong>, <strong>Require</strong>, <strong>Do not</strong>, and <strong>Never</strong> are must-level unless explicitly marked as conditional, <strong>should</strong>, or <strong>may</strong>.</li>
-<li><strong>Evidence:</strong> A written rule is not proof of implementation. The team must provide the test, deployment, or operating evidence requested by the guide.</li>
+<li><strong>Direct commands:</strong> <strong>Use</strong>, <strong>Require</strong>, <strong>Do not</strong>, and <strong>Never</strong> also mean <strong>must</strong>, unless the point explicitly says it is conditional, <strong>should</strong>, or <strong>may</strong>.</li>
+<li><strong>Evidence:</strong> Writing a rule does not prove that the code follows it. Provide the test results, deployment checks, or operating records requested by the guide.</li>
 </ul>
 </blockquote>
+<h4 id="plain-language-terms" tabindex="-1">Technical terms in simple English</h4>
+<p>These short explanations help you read the guide. The detailed requirements in each section still apply.</p>
+<table>
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Authentication</td><td>Confirm who the user or application is.</td></tr>
+<tr><td>Authorization</td><td>Check whether that user or application may perform this action on this data.</td></tr>
+<tr><td>Tenant isolation</td><td>Keep each tenant's data and actions inside its approved access boundary.</td></tr>
+<tr><td>Source of truth</td><td>The system that holds the official record. A model response or chat summary must not replace it.</td></tr>
+<tr><td>Durable state</td><td>Save important records so they survive an application or container restart.</td></tr>
+<tr><td>Idempotency</td><td>Repeating the same operation does not repeat its business effect, such as creating another invoice or sending another email.</td></tr>
+<tr><td>Reconciliation</td><td>Check the saved records against the external system to find and resolve missing, stuck, or uncertain results before retrying.</td></tr>
+<tr><td>Contract</td><td>The agreed inputs, outputs, data format, and behaviour that two parts of the system must follow.</td></tr>
+<tr><td>Composition root</td><td>The startup code that creates services and supplies their dependencies, such as storage and AI clients.</td></tr>
+<tr><td>Immutable release artifact</td><td>The exact built version that passed the checks. Deploy that version without rebuilding or changing its contents.</td></tr>
+<tr><td>Guardrails</td><td>Checks around AI inputs and outputs. They do not replace permissions, business rules, or required approval.</td></tr>
+<tr><td>Residual risk</td><td>The risk that remains after the safeguards are in place.</td></tr>
+</tbody>
+</table>
 <hr>
 <p><a id="guide-navigation"></a></p>
 <h2 id="guide-navigation-heading" tabindex="-1">Guide navigation</h2>
@@ -2459,9 +2480,10 @@ Navigation shortcuts change the reading order only. They never waive an applicab
 <li><strong><a href="#phase-3">Phase 3 — Run it reliably</a></strong> · Steps 14–17</li>
 <li><strong><a href="#phase-4">Phase 4 — Prove and release it</a></strong> · Steps 18–21</li>
 <li><strong><a href="#phase-5">Phase 5 — Document and confirm it</a></strong> · Steps 22–23</li>
+<li><strong><a href="#phase-6">Phase 6 — Hand off for autodeployment</a></strong> · Step 24</li>
 </ul>
 <details>
-<summary><strong>Open the complete 24-step index</strong></summary>
+<summary><strong>Open the complete 25-step index</strong></summary>
 <p><strong>Phase 1 — Plan the solution</strong></p>
 <ul>
 <li><a href="#step-0">Step 0 — Profile the project</a></li>
@@ -2501,11 +2523,15 @@ Navigation shortcuts change the reading order only. They never waive an applicab
 <li><a href="#step-22">Step 22 — Keep documentation aligned with reality</a></li>
 <li><a href="#step-23">Step 23 — Final production check</a></li>
 </ul>
+<p><strong>Phase 6 — Hand off for autodeployment</strong></p>
+<ul>
+<li><a href="#step-24">Step 24 — Hand off the completed agent for autodeployment</a></li>
+</ul>
 </details>
 <hr>
 <p><a id="phase-1"></a></p>
 <h2 id="phase-1-%E2%80%94-plan-the-solution" tabindex="-1">PHASE 1 — PLAN THE SOLUTION</h2>
-<p><strong>Phase outcome:</strong> A verified project profile, agreed business flow, safe architecture, maintainable code design, and explicit business state model.</p>
+<p><strong>Phase outcome:</strong> Confirm what the agent does, agree its business flow, choose a safe design, and define clear code boundaries and business states.</p>
 <p><strong>Steps in this phase:</strong></p>
 <ul>
 <li><a href="#step-0">0 · Profile</a></li>
@@ -2516,11 +2542,11 @@ Navigation shortcuts change the reading order only. They never waive an applicab
 </ul>
 <p><a id="step-0"></a></p>
 <h3 id="step-0-%E2%80%94-profile-the-project" tabindex="-1">STEP 0 — PROFILE THE PROJECT</h3>
-<p>The correct production design depends on what the project actually does. Complete this profile before choosing frameworks, storage, identity, deployment, or agent patterns.</p>
+<p>First understand what your agent actually does. Complete this profile before choosing its framework, storage, identity setup, deployment, or agent design.</p>
 <h4 id="0.1-complete-the-project-profile" tabindex="-1">0.1 Complete the project profile</h4>
 <blockquote>
 <p><strong>Important:</strong>
-Copy this profile into the project's own design or release-evidence record and complete it there. Do not tick or edit the controlled master guide. A checked box in the project copy means the answer has been completed and verified; it does not mean that every example on the line applies.</p>
+Copy this profile into your project's design or release record and complete it there. Do not tick boxes or edit answers in this shared guide. Tick a box in your project copy only after checking the answer. The examples are choices to consider, not a requirement to use every item listed.</p>
 <ul>
 <li>Change <code>[ ]</code> to <code>[x]</code> only after confirming the answer.</li>
 <li>Use <strong>None</strong>, <strong>Not applicable</strong>, or <strong>Unknown — owner — target date</strong> when needed.</li>
@@ -2529,7 +2555,7 @@ Copy this profile into the project's own design or release-evidence record and c
 </blockquote>
 <blockquote>
 <p><strong>Warning:</strong>
-<strong>Unknowns that block progress:</strong> An unknown affecting authentication, authorization, tenant isolation, data classification, regulated processing, a high-impact action, source of truth, durability, or recovery blocks production approval. It also blocks implementation when continuing would require guessing a security or business boundary. Every other unknown needs a named owner and target date before work proceeds on that assumption.</p>
+<strong>Unknowns that block progress:</strong> Do not approve production while an unanswered question affects sign-in, permissions, tenant isolation, data classification, regulated processing, a high-impact action, the official data record, durable storage, or recovery. Stop implementation too if continuing would mean guessing a security or business boundary. For any other unanswered question, name the person responsible and a target date before continuing on that assumption.</p>
 </blockquote>
 <h5 id="1.-project%2C-purpose%2C-and-start" tabindex="-1">1. Project, purpose, and start</h5>
 <ul>
@@ -2635,7 +2661,7 @@ Complete this snapshot after confirming all eight sections.</p>
 <li>Databases, caches, files, queues, checkpoints, memory, and vector stores.</li>
 <li>Infrastructure, containers, deployment workflows, monitoring, and recovery setup.</li>
 </ul>
-<p>Do not trust only the README or infer the whole architecture from one import. Confirm the application's actual runtime behavior and client workflow.</p>
+<p>Do not rely only on the README or one imported library. Check how the application actually runs and how the client's workflow works.</p>
 <p><a id="step-0-applicability"></a></p>
 <h4 id="0.3-apply-the-relevant-guidance" tabindex="-1">0.3 Apply the relevant guidance</h4>
 <ul>
@@ -2648,12 +2674,27 @@ Complete this snapshot after confirming all eight sections.</p>
 <li><strong><a href="#step-12">Files, OCR, or RAG project</a>:</strong> Apply file validation, malware, parser, extraction-confidence, retrieval-permission, and knowledge-freshness guidance.</li>
 <li><strong><a href="#step-13">Graph, Teams, email, or webhook project</a>:</strong> Apply the matching integration guidance.</li>
 <li><strong>Worker, scheduled, or WebSocket project:</strong> Apply the <a href="#step-14">runtime guidance in Step 14</a> and the <a href="#step-15">durability, scheduling, and WebSocket guidance in Step 15</a>.</li>
+<li><strong>Agent deployed through Agent Factory autodeployment:</strong> Declare the <a href="#0.4-declare-autodeployment-prerequisites">prerequisites in Step 0.4</a> and prepare the <a href="#step-24">handoff package in Step 24</a>.</li>
 </ul>
 <blockquote>
 <p><strong>Important:</strong> Do not report a missing technology pattern when the project does not use that technology. Also do not skip authentication, authorization, configuration, tenant validation, tests, or monitoring merely because the project is small or deployed for one client.</p>
 </blockquote>
-<p>Assign severity using the approved Skysecure risk matrix. Until a central matrix exists, use a documented project method approved by the accountable security, privacy, and business roles as applicable; do not let a delivery team approve its own exception informally. A Critical or High residual security, privacy, safety, legal or compliance, tenant-isolation, data-integrity, or material-correctness risk blocks release until it is technically reduced below High and revalidated.</p>
+<p>Rate each issue using the approved Skysecure risk matrix. If a central matrix is not available, document the project's method and get approval from the responsible security, privacy, and business roles where needed. A delivery team must not informally approve its own exception.</p>
+<p>Do not release while a Critical or High risk remains in security, privacy, safety, legal or compliance obligations, tenant isolation, data integrity, or important business results. Fix or technically contain the problem, reduce the remaining risk below High, and verify the result again.</p>
 <p>In this guide, <strong>client</strong> means the customer receiving the solution, <strong>Entra tenant</strong> means the identity directory issuing users and tokens, and <strong>application data tenant</strong> means the boundary used to isolate records, files, queues, memory, and search data.</p>
+<h4 id="0.4-declare-autodeployment-prerequisites" tabindex="-1">0.4 Declare autodeployment prerequisites</h4>
+<blockquote>
+<p><strong>Applies when:</strong> The agent is deployed through Agent Factory autodeployment into a client's Azure tenant.</p>
+</blockquote>
+<p>The deployment owner must be able to install the agent without a developer present. During development, list all required mailboxes, identities, permissions, and settings, including anything the platform does not already provision. Give this list to the deployment owner before release.</p>
+<ul>
+<li><strong>Declare each mailbox and business-access role separately.</strong> Do not use one generic "email access" requirement. For an invoice agent, the PO mailbox, invoice mailbox, finance approvers, and agent service/sender mailbox are separate requirements. State what each role can do and whether it is required for core operation, required only for an enabled feature, or optional.</li>
+<li><strong>Define the Azure Table contract.</strong> The deployment owner configures a dedicated Azure Table for that client's deployment, with one named column per declared role. Document the table's keys, column names, data types, validation, and how multiple values are represented. Supply its account, table name, and configuration through deployment settings, not hard-coded client values. Keep tenant, agent, and environment boundaries explicit.</li>
+<li><strong>Collect the client's real values during installation.</strong> After deployment, the client's verified Global Admin completes the required setup fields. Use the <a href="#standard-agent-setup">common agent setup</a> for multiple optional Agent Admins, multiple allowed users/groups, sender mailbox, multiple report recipients, send time, and time zone. Keep these separate from the agent's business-role assignments.</li>
+<li><strong>Block use of incomplete required roles.</strong> Never use a guessed, blank, default, or partially configured identity. Until required core setup is valid, allow only the authorized setup/recovery path and block business processing. Missing settings for an optional feature block that feature. Optional admins and user restrictions remain optional; an explicitly saved organization-wide access mode follows the common setup rules.</li>
+<li><strong>Verify permissions, not only entered values.</strong> An Azure Table entry does not grant Entra roles, Azure RBAC, consent, mailbox access, or sending permission. Declare the exact required permissions separately, arrange the approved grants, and validate identity and effective access before the dependent operation is enabled.</li>
+<li><strong>Do not use Power Platform custom connectors</strong> for these autodeployment email or RBAC-style integrations. Record the approved integration and permission mechanism in the handoff package.</li>
+</ul>
 <hr>
 <p><a id="step-1"></a></p>
 <h3 id="step-1-%E2%80%94-define-the-real-business-flow" tabindex="-1">STEP 1 — DEFINE THE REAL BUSINESS FLOW</h3>
@@ -2709,33 +2750,61 @@ Record the result, notify users, monitor, and reconcile failures
 <li>Do not expose internal agents or privileged tools directly to external callers.</li>
 <li>Record important architecture decisions and why the selected design is safe.</li>
 </ul>
-<p>The application should remain replaceable. Losing one process or container must not lose important business state. Prevent duplicate effects where the destination supports idempotency; otherwise make ambiguous external outcomes visible and reconcile them before retrying.</p>
-<p>Draw the data flow and trust boundaries before implementation. Create a practical threat model covering identities, tenant boundaries, untrusted inputs, external processors, model/tool access, privileged actions, sensitive data, and outbound destinations. For each material threat, record the affected asset or boundary, planned control, verification evidence, residual risk, owner, and target date. Route accepted residual risk through the approved risk process with an accountable approver and expiry or review date. Update the model after material architecture, permission, model, tool, or integration changes.</p>
+<p>You should be able to replace an application process or container without losing important business records. Prevent repeated actions when the destination supports idempotency. If an external call has an uncertain result, show that status and check what actually happened before retrying.</p>
+<p>Before coding, draw how data moves and where identity or access checks happen. Create a practical threat model: explain what could go wrong with identities, tenant boundaries, untrusted input, external data processors, AI/tool access, privileged actions, sensitive data, and outbound destinations.</p>
+<p>For each important threat, record what is at risk, the planned safeguard, how you will verify it, the remaining risk, the owner, and the target date. Use the approved risk process for any accepted remaining risk, with a responsible approver and an expiry or review date. Update this record after significant changes to the architecture, permissions, models, tools, or integrations.</p>
+<h4 id="reusable-agent-approaches" tabindex="-1">Build once for the business; keep the AI approach replaceable</h4>
+<blockquote>
+<p><strong>Mandatory developer standard:</strong> Keep each new agent's business logic separate from its Copilot, Foundry, or open-source implementation. Switching the AI approach must not mean rewriting the same business rules. Keep AI-specific changes in a small, clearly named group of modules. Two or three files is a useful goal where practical—not a fixed limit, and not a reason to skip other required changes or tests.</p>
+</blockquote>
+<ul>
+<li><strong>Separate the user channel from the AI approach.</strong> Microsoft 365 Copilot and Teams are the intended user-facing channels across the three approaches. Keep their entry points separate from the AI implementation. Channel authentication, manifests, and platform-specific capabilities may still need different integration code and validation.</li>
+<li><strong>Keep the same business behaviour.</strong> For the same agent, keep validation, access rules, tenant isolation, approvals, duplicate prevention, persistence contracts, and report rules independent of the AI provider. Reuse email, storage, and other integration components when their contracts are unchanged. Do not scatter Copilot-, Foundry-, or model-specific SDK calls through business methods.</li>
+<li><strong>Use a small common AI contract.</strong> Business workflows call an application-owned function or interface, such as <code>ask_ai()</code>, instead of calling a specific provider directly. Define its validated inputs, permitted context, result format, and failure behaviour. Use a separate implementation for each approach, and connect it at application startup. Keep authorization and final business decisions outside the model; a provider response must not bypass them.</li>
+<li><strong>Keep approach-specific changes together.</strong> Isolate the provider client, prompts or orchestration, and startup wiring in clearly named modules. Document additional changes to configuration, dependencies, tests, manifests, permissions, hosting, or deployment resources. Do not compress unrelated responsibilities into two or three files just to meet a count.</li>
+<li><strong>Keep environment and approach separate.</strong> <a href="#one-environment-selection">Development/production selection</a> chooses the correct environment settings; it does not by itself convert Copilot to Foundry or open source. Select the approved provider through trusted configuration or the repository's startup wiring. Reject invalid required settings and do not silently switch to an unapproved provider.</li>
+<li><strong>Keep each approach repository independently deployable.</strong> Each repository must contain the complete application source and declare its dependencies and platform artifacts so its own standard pipeline can build, test, and deploy it. Separate folders or modules do not require a separate shared-code repository, an additional pipeline for each folder, or another running agent service. A shared package is optional, not a prerequisite for this structure.</li>
+<li><strong>Keep common fixes aligned across repositories.</strong> If common code is copied into separate approach repositories, it is not automatically synchronized. Identify the common modules and their reviewed baseline, apply relevant business/security fixes to every supported variant, and record tests and release status for each. An approach-specific update must not silently change another production deployment.</li>
+<li><strong>Prove every supported approach.</strong> Run the common business/security tests and the approach's own integration, AI-behaviour, channel, and end-to-end tests. Check malformed model output, unavailable providers, authorization, tenant isolation, and duplicate-sensitive actions. A successful conversion or pipeline alone is not evidence that all approaches behave correctly. Do not claim support for an approach that has not been implemented and validated.</li>
+</ul>
+<p><strong>Invoice example:</strong> Keep PO/invoice matching, finance permissions, SharePoint records, PDF generation, and daily-report rules unchanged when their requirements are the same. Route AI requests through <code>ask_ai()</code>; its Copilot implementation talks to the approved Copilot service, its Foundry implementation talks to the configured Azure model, and its open-source implementation talks to the approved hosted model. Replacing the language model does not automatically replace Azure document extraction or Microsoft 365 integrations; treat those as separate changes when required.</p>
+<p><strong>Developer handoff:</strong> Document the common contract, reusable modules, approach-specific files, configuration and dependency differences, and conversion-test evidence. Apply this separation pattern to every agent, but do not copy invoice-specific business rules into unrelated agents or build unused provider frameworks in advance.</p>
 <hr>
 <p><a id="step-3"></a></p>
 <h3 id="step-3-%E2%80%94-write-maintainable%2C-modular%2C-production-ready-python" tabindex="-1">STEP 3 — WRITE MAINTAINABLE, MODULAR, PRODUCTION-READY PYTHON</h3>
 <blockquote>
-<p><strong>Core coding rule:</strong> A developer who did not write the code should be able to find the business rule, understand its dependencies, test it in isolation, and see its production behavior without reading the entire repository.</p>
+<p><strong>Core coding rule:</strong> Another developer should be able to find a business rule, see what it depends on, test it separately, and understand how it behaves in production without reading the whole repository.</p>
 </blockquote>
 <p><strong>In this step:</strong></p>
 <ul>
 <li><a href="#step-3-naming">Naming</a> · <a href="#step-3-structure">Structure</a> · <a href="#step-3-design">Design principles</a> · <a href="#step-3-python">Python practices</a> · <a href="#step-3-modules">Module boundaries</a></li>
 <li><a href="#step-3-docs">Docstrings</a> · <a href="#step-3-config">Configuration</a> · <a href="#step-3-logging">Logging</a> · <a href="#step-3-dependencies">Dependencies and automation</a> · <a href="#step-3-ready">Review readiness</a></li>
 </ul>
-<p>No single design principle is enough. SOLID is a useful set of object-oriented design questions, not a Python standard and not an automatic measure of good code. Apply practices in this order when they conflict:</p>
+<p>No single design rule proves that code is good. SOLID provides useful questions for object-oriented design; it is not a Python requirement or a quality certificate. If design advice conflicts, use this order:</p>
 <ol>
 <li>Protect correctness, security, privacy, and data integrity.</li>
 <li>Prefer the clearest design that satisfies the real requirement.</li>
-<li>Keep responsibilities cohesive and dependencies explicit so behavior can be tested.</li>
-<li>Remove duplicated business knowledge without coupling unrelated concepts.</li>
-<li>Add extension points only where variation is real or reasonably evidenced.</li>
+<li>Keep related work together and make dependencies visible so the behaviour can be tested.</li>
+<li>Keep business rules in one place without joining unrelated parts of the system.</li>
+<li>Add ways to extend the code only when there is a real or well-supported need.</li>
 </ol>
 <p>This balance follows Python's emphasis on readability and practicality in <a href="https://peps.python.org/pep-0008/">PEP 8</a> and <a href="https://peps.python.org/pep-0020/">PEP 20</a>, while using architecture principles as judgment aids rather than ceremony.</p>
 <p><a id="step-3-naming"></a></p>
 <h4 id="follow-one-clear-naming-language" tabindex="-1">Follow one clear naming language</h4>
-<p>Names should identify the business concept, responsibility, and boundary without requiring a reader to inspect the implementation. Use terminology from the approved Skysecure domain glossary and use the same term in requirements, code, APIs, events, storage, prompts, logs, and documentation. Each repository must link to the current glossary and identify its owner. If the glossary does not yet exist, record <code>Unknown — owner — target date</code> in Step 0; do not claim automated naming compliance or invent conflicting project vocabularies.</p>
-<p>Externally referenced names—including API fields, environment variables, events, queues, prompt IDs, resource names, and stored fields—are contracts. Change them through a documented compatibility or migration process. Internal Python names may be refactored normally when tests prove that behavior is unchanged.</p>
-<p>For new logical services and repositories, use this default pattern:</p>
+<p>A name should tell another developer what something means, what it does, and which part of the system owns it. Use the same approved business terms in requirements, code, APIs, events, storage, prompts, logs, and documentation.</p>
+<p>Link each repository to the current Skysecure domain glossary and name its owner. If the glossary does not exist yet, record <code>Unknown — owner — target date</code> in Step 0. Do not claim that automated naming checks passed, or create conflicting terms in different projects.</p>
+<p>Other code and systems may depend on your API fields, environment variables, events, queues, prompt IDs, resource names, and stored fields. Treat these names as contracts and use a documented compatibility or migration process to change them. You may rename internal Python code normally when tests prove that its behaviour has not changed.</p>
+<p><strong>Agent repository names:</strong> Use the same naming pattern as the organization README:</p>
+<pre class='hljs'><code><div>af-{layer}-{business-name}-agent-{approach}
+</div></code></pre>
+<ul>
+<li><strong>Layer:</strong> Use <code>be</code> for backend or <code>fe</code> for frontend.</li>
+<li><strong>Business name:</strong> Describe what the agent does, using lowercase words separated by hyphens.</li>
+<li><strong>Approach:</strong> Use <code>copilot</code>, <code>foundry</code>, or <code>opensource</code>.</li>
+</ul>
+<p><strong>Example:</strong> <code>af-be-invoice-processing-agent-copilot</code>. Replace the business name and approach for your agent; do not copy the invoice name into an unrelated project.</p>
+<p>The <code>.github</code>, governance, and shared platform repositories have different purposes and do not need this agent naming pattern. Repository owners must document approved exceptions. Existing <code>-cron</code> repositories keep that suffix until their code is combined with the main agent and the change is validated.</p>
+<p><strong>Logical service names:</strong> A service or worker inside a repository can use the following pattern. This is not a replacement for the agent repository name above:</p>
 <pre class='hljs'><code><div>&lt;domain&gt;-&lt;capability&gt;-&lt;component&gt;
 </div></code></pre>
 <p>Examples: <code>billing-reconcile-agent</code>, <code>intake-email-worker</code>, <code>document-render-api</code>.</p>
@@ -2743,7 +2812,7 @@ Record the result, notify users, monitor, and reconcile failures
 <li>Use lowercase words separated by hyphens.</li>
 <li>Select business-domain and capability terms from the approved glossary.</li>
 <li>Use a component that describes the primary deployable unit, such as <code>api</code>, <code>worker</code>, <code>scheduler</code>, <code>agent</code>, <code>ui</code>, or <code>infra</code>.</li>
-<li>Apply an approved estate or portfolio prefix only when the Skysecure repository catalogue requires it.</li>
+<li>For logical services, add an organization or portfolio prefix only when the approved naming catalogue requires it. Agent repository names always follow the <code>af-</code> pattern above unless an exception is approved.</li>
 <li>Do not include a client, tenant, environment, region, employee name, version, or temporary words such as <code>new</code> and <code>final</code>.</li>
 <li>Do not rename an existing repository or released resource merely to satisfy a newer convention. Record the preferred name and migrate through an approved plan only when the operational benefit justifies the risk.</li>
 <li>Repositories containing several deployable components must document their component boundaries, identities, production commands, and release units.</li>
@@ -2852,7 +2921,7 @@ docs/                 architecture, operations, and runbooks
 pyproject.toml        project, dependency, and tool configuration
 </div></code></pre>
 </details>
-<p>Names may differ, and small services may combine folders. Do not create empty layers or a separate file for every class merely to look architectural. Preserve these boundaries instead:</p>
+<p>Names may differ, and small services may combine folders. Do not create empty layers or a separate file for every class merely to look architectural. Use these boundaries to implement the <a href="#reusable-agent-approaches">replaceable AI approach standard</a>:</p>
 <pre class='hljs'><code><div>HTTP / webhook / queue / schedule
                 ↓
        application use case
@@ -2865,9 +2934,9 @@ pyproject.toml        project, dependency, and tool configuration
 <ul>
 <li>Keep <code>main.py</code>, <code>app.py</code>, or <code>bootstrap.py</code> focused on loading validated settings, configuring observability, constructing shared resources, wiring dependencies, registering entry points, and managing lifecycle.</li>
 <li>Entry points validate and authorize input, call one application use case, and translate its result. They do not contain business workflows or direct database/SDK calls.</li>
-<li>Domain code owns business meaning and invariants. It must not import FastAPI routes, concrete cloud SDK clients, database sessions, or deployment configuration.</li>
-<li>Application code coordinates the use case. It depends on small application-owned contracts when an external implementation must be replaceable or isolated in tests.</li>
-<li>Adapters translate between those contracts and vendor SDKs. Keep provider-specific request models, pagination, retries, and error translation at this edge.</li>
+<li>Domain code contains business rules and the conditions that must always stay true. It must not import FastAPI routes, cloud SDK clients, database sessions, or deployment settings.</li>
+<li>Application code puts the workflow steps together. Use small interfaces owned by the application when an external service must be replaceable or tested separately.</li>
+<li>Adapters connect those interfaces to provider SDKs. Keep the provider's request formats, pagination, retries, and error handling in the adapter.</li>
 <li>Pass dependencies through constructors or function parameters. Do not construct network clients, repositories, credentials, or model clients inside business methods.</li>
 <li>Use a class when related operations genuinely share dependencies or lifecycle state. Use a plain function for stateless parsing, validation, mapping, calculation, or formatting; a class is not automatically more production-ready.</li>
 <li>Keep external effects at visible boundaries. Prefer pure functions for parsing, normalization, comparison, calculation, validation, and mapping where practical.</li>
@@ -2875,7 +2944,7 @@ pyproject.toml        project, dependency, and tool configuration
 <li>Do not keep request, user, tenant, workflow, or mutable business state in module-level globals.</li>
 <li>Avoid circular imports, wildcard imports, runtime <code>sys.path</code> changes, and catch-all <code>utils.py</code>, <code>helpers.py</code>, or <code>manager.py</code> modules that collect unrelated behavior.</li>
 </ul>
-<p>The goal is high cohesion within a module and low coupling between modules. Microsoft likewise recommends loose coupling, encapsulated domain knowledge, and well-defined APIs when designing systems that must evolve (<a href="https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/">Azure Architecture Center</a>).</p>
+<p>Keep closely related work in the same module, and avoid unnecessary dependencies between modules. This is what <strong>high cohesion</strong> and <strong>low coupling</strong> mean. Microsoft recommends the same approach: keep business knowledge together and connect components through clear APIs (<a href="https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/">Azure Architecture Center</a>).</p>
 <p><a id="step-3-design"></a></p>
 <h4 id="apply-design-principles-deliberately" tabindex="-1">Apply design principles deliberately</h4>
 <ul>
@@ -2883,15 +2952,15 @@ pyproject.toml        project, dependency, and tool configuration
 <li><strong>Separation of concerns:</strong> Keep transport, authorization, business decisions, orchestration, persistence, vendor integration, and presentation separate when they change or fail for different reasons.</li>
 <li><strong>DRY — do not repeat business knowledge:</strong> Keep one authoritative representation of a rule, schema, mapping, or policy. Do not merge code merely because a few lines look similar; small duplication is safer than coupling unrelated concepts. This is the original intent of <a href="https://media.pragprog.com/titles/tpp20/dry.pdf">DRY</a>.</li>
 <li><strong>YAGNI — do not build speculative capability:</strong> Do not create plugin systems, generic factories, optional workflows, or configuration flags for requirements that do not exist. YAGNI does not justify postponing security, tests, logging, recovery, or maintainability work. See Martin Fowler's original <a href="https://martinfowler.com/bliki/Yagni.html">YAGNI explanation</a>.</li>
-<li><strong>Composition over inheritance:</strong> Assemble behavior from explicit collaborators. Use inheritance only for a genuine substitutable relationship with a stable behavioral contract.</li>
+<li><strong>Composition over inheritance:</strong> Build behaviour by connecting objects or functions with clear responsibilities. Use inheritance only when the child can safely replace the parent without changing the behaviour callers rely on.</li>
 </ul>
 <p>Use SOLID as five review questions, not five mandatory layers:</p>
 <ul>
-<li><strong>Single Responsibility:</strong> Does this unit have one cohesive responsibility and one principal reason or business actor that would cause it to change?</li>
-<li><strong>Open/Closed:</strong> Is there a demonstrated point of variation that benefits from extension without rewriting stable policy? Do not add an abstraction for imaginary future changes.</li>
-<li><strong>Liskov Substitution:</strong> Can every implementation preserve the caller-visible behavior, invariants, error meaning, and side-effect contract of the abstraction?</li>
-<li><strong>Interface Segregation:</strong> Does each consumer depend only on the small capability it needs rather than a broad vendor or service interface?</li>
-<li><strong>Dependency Inversion:</strong> Does business policy depend on an application-owned contract, with the concrete SDK or infrastructure adapter supplied from the composition root?</li>
+<li><strong>Single Responsibility:</strong> Does this part of the code have one clear job, with one main business reason or responsible business role that would require it to change?</li>
+<li><strong>Open/Closed:</strong> Is there a real need to add a variation without rewriting stable business rules? Do not add an abstraction for imaginary future changes.</li>
+<li><strong>Liskov Substitution:</strong> Can one implementation replace another while keeping the same promised behaviour, required conditions, error meanings, and external effects?</li>
+<li><strong>Interface Segregation:</strong> Does the caller depend only on the small set of operations it needs, instead of a large provider or service interface?</li>
+<li><strong>Dependency Inversion:</strong> Does business code use an interface owned by the application, with startup code supplying the actual SDK or infrastructure adapter?</li>
 </ul>
 <p>Avoid “SOLID theatre”: one interface for every class, a class for every function, factories around single constructors, inheritance used only for code reuse, or dozens of forwarding files that make one workflow difficult to follow. The author of SOLID also describes the principles as ideas to apply rather than rigid laws (<a href="https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html">Robert C. Martin</a>).</p>
 <p>Use a <code>typing.Protocol</code> only where a real boundary or substitution need exists:</p>
@@ -2929,7 +2998,7 @@ processor = ProcessDocument(
 )
 </div></code></pre>
 </details>
-<p>For a simple local helper, call the function directly or pass a callable. A protocol and factory would add ceremony without improving the boundary. Python's <code>Protocol</code> provides structural typing; it does not require concrete classes to inherit from the protocol (<a href="https://docs.python.org/3/library/typing.html#typing.Protocol">Python typing documentation</a>).</p>
+<p>For a simple local helper, call the function directly or pass a callable. Do not add a protocol and factory when they only make the code harder to follow. Python's <code>Protocol</code> checks the required structure; an implementing class does not have to inherit from it (<a href="https://docs.python.org/3/library/typing.html#typing.Protocol">Python typing documentation</a>).</p>
 <p><a id="step-3-python"></a></p>
 <h4 id="write-clear%2C-typed%2C-predictable-python" tabindex="-1">Write clear, typed, predictable Python</h4>
 <ul>
@@ -2997,12 +3066,12 @@ processor = ProcessDocument(
 <p>Use comments sparingly to explain why a non-obvious business, security, performance, or compatibility choice exists. Delete comments that merely translate the syntax into English. PEP 8 warns that a comment that contradicts changed code is worse than no comment.</p>
 <p><a id="step-3-config"></a></p>
 <h4 id="manage-.env%2C-.env.example%2C-and-production-settings-correctly" tabindex="-1">Manage <code>.env</code>, <code>.env.example</code>, and production settings correctly</h4>
-<p>Configuration is a typed input to the application, not a collection of scattered <code>os.getenv()</code> calls.</p>
+<p>Define and validate settings in one place, with clear types and rules. Do not read settings through scattered <code>os.getenv()</code> calls across the application.</p>
 <h5 id="define-the-settings-contract" tabindex="-1">Define the settings contract</h5>
 <ul>
-<li>Define one typed settings schema. Load and validate it once at the composition root before accepting traffic or starting a worker.</li>
+<li>Define one typed settings schema. Load and validate it once in the startup code before accepting requests or starting a worker.</li>
 <li>Give required production values no fake defaults. Constrain URLs, identifiers, timeouts, modes, sizes, and cross-field rules.</li>
-<li>Treat settings as an immutable process snapshot and inject the complete object or a smaller component-specific configuration into services.</li>
+<li>Keep the loaded settings unchanged for the life of the process. Pass the complete settings object, or just the settings a component needs, into each service.</li>
 <li>Fail startup when required configuration is missing, empty, malformed, contradictory, or unknown. Report the field and rule without printing its raw value.</li>
 <li>Keep environment-variable names stable and uppercase. Do not rely on case distinctions because Windows environment keys are case-insensitive.</li>
 <li>Keep ordinary defaults safe. Never default authentication off, tenant checking off, TLS verification off, unrestricted CORS on, or a production dependency to a developer endpoint.</li>
@@ -3042,7 +3111,7 @@ HttpsUrl = Annotated[
         validate_default=<span class="hljs-literal">True</span>,
     )
 
-    environment: <span class="hljs-type">Literal</span>[<span class="hljs-string">&quot;local&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-string">&quot;staging&quot;</span>, <span class="hljs-string">&quot;production&quot;</span>]
+    environment: <span class="hljs-type">Literal</span>[<span class="hljs-string">&quot;development&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-string">&quot;staging&quot;</span>, <span class="hljs-string">&quot;production&quot;</span>]
     log_level: <span class="hljs-type">Literal</span>[<span class="hljs-string">&quot;DEBUG&quot;</span>, <span class="hljs-string">&quot;INFO&quot;</span>, <span class="hljs-string">&quot;WARNING&quot;</span>, <span class="hljs-string">&quot;ERROR&quot;</span>, <span class="hljs-string">&quot;CRITICAL&quot;</span>]
     log_format: <span class="hljs-type">Literal</span>[<span class="hljs-string">&quot;console&quot;</span>, <span class="hljs-string">&quot;json&quot;</span>]
     tenant_id: UUID
@@ -3085,8 +3154,8 @@ HttpsUrl = Annotated[
 <p>Example <code>.env.example</code>:</p>
 <details>
 <summary><strong>View the `.env.example` template</strong></summary>
-<pre class='hljs'><code><div># Required: local, test, staging, or production.
-APP_ENVIRONMENT=local
+<pre class='hljs'><code><div># Required: development, test, staging, or production. No default.
+APP_ENVIRONMENT=development
 
 # Required: DEBUG, INFO, WARNING, ERROR, or CRITICAL.
 APP_LOG_LEVEL=DEBUG
@@ -3271,7 +3340,7 @@ python -m pytest
 <hr>
 <p><a id="phase-2"></a></p>
 <h2 id="phase-2-%E2%80%94-build-it-securely" tabindex="-1">PHASE 2 — BUILD IT SECURELY</h2>
-<p><strong>Phase outcome:</strong> Reviewed code and controlled configuration, identity, tenant, data, AI, file, API, and integration boundaries.</p>
+<p><strong>Phase outcome:</strong> Review the code and verify the safeguards around settings, identities, tenants, data, AI, files, APIs, and integrations.</p>
 <p><strong>Steps in this phase:</strong></p>
 <ul>
 <li><a href="#step-5">5 · Code review</a></li>
@@ -3286,7 +3355,7 @@ python -m pytest
 </ul>
 <p><a id="step-5"></a></p>
 <h3 id="step-5-%E2%80%94-review-ai-generated-code-as-an-untrusted-draft" tabindex="-1">STEP 5 — REVIEW AI-GENERATED CODE AS AN UNTRUSTED DRAFT</h3>
-<p>AI can accelerate development, but it does not take responsibility for the result. The developer remains responsible for architecture, correctness, security, performance, and maintainability.</p>
+<p>AI can help you write code faster, but you are still responsible for the result: its design, correctness, security, performance, and ease of maintenance.</p>
 <ul>
 <li>Read and understand every generated or changed line.</li>
 <li>Use only organization-approved AI development tools, accounts, models, extensions, and data-handling modes.</li>
@@ -3305,7 +3374,7 @@ python -m pytest
 <p><a id="step-6"></a></p>
 <h3 id="step-6-%E2%80%94-externalize-and-validate-configuration" tabindex="-1">STEP 6 — EXTERNALIZE AND VALIDATE CONFIGURATION</h3>
 <blockquote>
-<p><strong>Portability rule:</strong> The same reviewed code and release artifact should work in development, staging, Skysecure, and approved client environments. Differences belong in validated configuration and deployment automation.</p>
+<p><strong>Portability rule:</strong> The same reviewed code and build should work in development, staging, Skysecure, and approved client environments. Put environment differences in validated settings and deployment automation.</p>
 </blockquote>
 <ul>
 <li>Never hardcode environment- or client-specific values such as tenant IDs, client IDs, resource IDs, domains, SharePoint sites, mailboxes, list or library names, storage accounts, database names, model deployments, regions, callback URLs, schedules, client-specific currencies, or client-specific policy thresholds. Keep invariant security, financial, and domain rules in deterministic, version-controlled, tested code; use validated, versioned configuration only where behavior genuinely varies.</li>
@@ -3313,7 +3382,7 @@ python -m pytest
 <li>Document each setting, its purpose, type, allowed values, safe default, whether it is required, whether it is sensitive, and whether it is tenant-specific.</li>
 <li>Validate application settings such as required values, URLs, ranges, limits, timeouts, retention, and feature flags before the process accepts work. Validate infrastructure settings such as replica ranges, resource limits, networking, and scaling rules through infrastructure tests, deployment policy, and production smoke checks before traffic promotion.</li>
 <li>Stop startup when required security or identity configuration is invalid. If an optional feature is misconfigured, disable that feature safely and make the problem visible.</li>
-<li>Keep development shortcuts, debug behavior, reload mode, sample users, and test bypasses disabled in production.</li>
+<li>Keep local reload tools and sample users out of production. Development mode must not disable authentication, authorization, tenant isolation, validation, duplicate protection, or required business and data-integrity rules.</li>
 <li>Maintain separate configuration for each environment.</li>
 <li>Treat prompts, model selection, retrieval settings, tool definitions, feature flags, permissions, routing, and business thresholds as behavior-changing configuration.</li>
 <li>Version, review, test, and deploy behavior-changing configuration through the same protected process used for code.</li>
@@ -3321,6 +3390,31 @@ python -m pytest
 <li>Keep a tested way to restore the previous approved configuration.</li>
 <li>Detect unexpected production configuration drift.</li>
 </ul>
+<h4 id="one-environment-selection" tabindex="-1">Move from development to production without code changes</h4>
+<blockquote>
+<p><strong>Mandatory for every agent:</strong> Use the same application code and release artifact in dev and production. Select the environment once; deployment must supply the matching configuration automatically. Developers must not edit code or manually switch a list of settings for each release.</p>
+</blockquote>
+<p>Use <code>APP_ENVIRONMENT</code> as the single environment setting, following this guide's <code>APP_</code> naming convention:</p>
+<table>
+<thead>
+<tr><th scope="col">Environment setting</th><th scope="col">Configuration supplied by deployment</th></tr>
+</thead>
+<tbody>
+<tr><td><code>APP_ENVIRONMENT=development</code></td><td>Dev resources, test data, test mailboxes, and dev identities and secret references.</td></tr>
+<tr><td><code>APP_ENVIRONMENT=production</code></td><td>Approved production resources, live mailboxes, and production identities and secret references.</td></tr>
+</tbody>
+</table>
+<p><strong>One selection, not one total setting:</strong> During client onboarding, the deployment owner must provision and map each environment's resources, settings, and secret references. Later releases reuse that mapping. Changing <code>APP_ENVIRONMENT</code> alone does not create resources, migrate data, or grant access.</p>
+<ul>
+<li><strong>Validate in one place.</strong> Read the setting through the shared typed configuration system. Reject missing, blank, or unsupported values before accepting work. Use <code>development</code> and <code>production</code>; <code>test</code> and <code>staging</code> are also supported when needed, with isolated resources and the same protections. Resource-name codes such as <code>dev</code> and <code>prd</code> are not runtime values. Migrate existing variable names through a documented transition, not competing selectors.</li>
+<li><strong>Load the correct configuration.</strong> Keep variable names consistent; deployment supplies their environment-specific values and secrets securely. Validate them against the intended client and deployment target. Stop on missing or inconsistent required configuration; never silently switch to mock services, in-memory storage, or another environment.</li>
+<li><strong>Keep environments separate.</strong> Dev identities must not access production data or secrets. Test emails, queues, storage, and external actions must stay inside approved test resources. Never switch a live production deployment to development mode to run tests.</li>
+<li><strong>Keep the same security and business checks.</strong> Authentication, permissions, tenant isolation, validation, duplicate detection, and data-integrity rules must remain enabled in every environment. Debug logging must not expose sensitive data.</li>
+<li><strong>Apply the selection to every component.</strong> The main app, workers, and scheduled Container App Jobs must receive the correct environment configuration. Keep their identities separately scoped to the permissions each component needs.</li>
+<li><strong>Prove it before release.</strong> Test both environment configurations, invalid selections, missing dependencies, and wrong-environment resource mappings. Exercise production mode using approved isolated acceptance-test resources and identities, then promote the same tested artifact with the production configuration. Record the results; a setting alone is not proof of production readiness.</li>
+</ul>
+<p><strong>Example — repeated invoice uploads:</strong> Use synthetic invoices in dev. Confirm that a duplicate does not repeat business actions or send another email. To repeat the full workflow, create a fresh test case or reset only the isolated dev test records with an approved test tool. Do not disable duplicate protection or clear production records.</p>
+<p><strong>Developer handoff:</strong> Keep the supported values, configuration mapping, safe test-data reset procedure, and test evidence in the repository. The deployment owner selects the target environment; no application source changes are required.</p>
 <p>Before calling an agent portable, deploy it into a clean client-like environment using only documented configuration and automation. Source-code changes for a new tenant or client are a design failure unless the client has a genuinely different product requirement.</p>
 <hr>
 <p><a id="step-7"></a></p>
@@ -3371,6 +3465,28 @@ python -m pytest
 <li>Require approved MFA for privileged administrators, production-deployment approvers, and human approvers of high-impact actions. Use phishing-resistant authentication strength for privileged Entra roles and wherever the risk assessment requires it. Enforce the requirement through the identity provider or protected approval boundary, require fresh step-up authentication when the action policy demands it, and retain non-secret evidence that the required context was satisfied. Govern emergency-access accounts separately, alert on their use, and test both access and recovery without weakening the normal policy. Follow Microsoft's current <a href="https://learn.microsoft.com/en-us/entra/identity/conditional-access/policy-admin-phish-resistant-mfa">administrator authentication-strength guidance</a>.</li>
 </ul>
 <p>Never accept tenant ID, user ID, role, or authorization scope from model output or an editable request field. Build the trusted execution context from validated identity claims and approved server-side mappings.</p>
+<h4 id="standard-agent-setup" tabindex="-1">Standard agent setup: owner, administrators, access and reports</h4>
+<blockquote>
+<p><strong>Mandatory developer standard:</strong> Build this setup into every new SkySecure agent, whether it uses Copilot, Foundry, or open source. The client may choose not to add extra Agent Admins or restrict users, but developers must still implement these options. Allow multiple Agent Admins, allowed users or groups, and report recipients—not just one person.</p>
+</blockquote>
+<ul>
+<li><strong>Initial setup:</strong> The client's verified Global Admin completes onboarding and nominates the agent's primary owner. Verify setup authority through trusted identity and permission checks, not a typed email address. Keep at least one authorized owner and a controlled recovery process.</li>
+<li><strong>Optional additional Agent Admins:</strong> Allow the owner to nominate multiple department admins or other responsible people. They receive the same in-agent setup and administration controls as the owner, within that tenant and agent only. This does not grant Entra Global Administrator, Azure administration, or unrestricted access to confidential records. Allow each admin to be added or removed individually. The agent must work when no additional admins are provided.</li>
+<li><strong>Select who can access the agent:</strong> Provide a multi-select list for allowed organization users or groups, with individual additions and removals. When restrictions are selected, only those users or group members can use the agent; keep a separately authorized administration path for its owner and Agent Admins. Check access on the server for chat, APIs, tools, files, and reports, not only in the screen. Other signed-in users should see: <em>"You don't have access to this agent. Please contact your organization's Agent Admin or IT team."</em> Do not return protected data or run the requested action.</li>
+<li><strong>User selection is optional:</strong> If no restriction is selected during initial setup, all signed-in internal members of that organization can use the agent. Clearly show <em>"All signed-in members of your organization can use this agent"</em> before saving, and store this as an explicit access mode. This does not include anonymous users, other tenants, or guests by default. An empty restricted list, missing setup, invalid configuration, or a failed permission lookup must not open access to everyone. Changing restricted access to organization-wide access requires an explicit authorized admin choice.</li>
+<li><strong>Keep trusted identity and data permissions:</strong> Entra sign-in and token validation remain required; the Azure Table access list does not replace them. Email addresses can be used for selection, but resolve and store the trusted tenant and Entra user/group object IDs. Agent access never overrides record ownership, department boundaries, approval rules, or confidential-document permissions.</li>
+<li><strong>Save and apply admin changes:</strong> Store configuration in Azure Table, isolated by tenant, agent, and <a href="#one-environment-selection">environment</a>. Only authorized administrators can change owners, admins, access rules, or report settings. Validate changes, prevent self-promotion and lost concurrent updates, and retain an audit trail. Apply access changes and revocations within a documented, tested limit; deny protected actions when their permission cannot be established.</li>
+<li><strong>Optional daily reports:</strong> Follow the <a href="#standard-report-delivery">Jobs, ReportLab, and Microsoft Graph standard</a>. When reports are enabled, collect these settings during agent setup and allow authorized admins to update them later:
+<ul>
+<li><strong>Send from:</strong> The mailbox or email address the report should be sent from. Verify that the sending identity has permission to send from that mailbox; entering an address alone does not grant permission.</li>
+<li><strong>Send to:</strong> One or more recipient mailbox or email addresses. Support multiple recipients, allow individual additions and removals, validate and deduplicate the addresses, and check that each recipient is permitted to receive the report's data.</li>
+<li><strong>When to send:</strong> The local send time and a valid time zone such as <code>Asia/Kolkata</code>.</li>
+</ul>
+<p>Keep the Agent Admin list, allowed-user/group list, and report-recipient list separate. Adding a recipient must not grant agent or admin access, and allowing someone to use the agent must not automatically subscribe them to reports. Keep reporting disabled until its required settings and sending permissions are valid.</p>
+</li>
+<li><strong>Apply the saved schedule:</strong> Use Azure Container Apps Jobs for the agent's daily report worker. Saving a table value alone does not update the job: implement reliable schedule synchronization, retries, and reconciliation. Show whether the saved schedule is pending, applied, or failed; never claim success before it is applied. Convert local time correctly for the job's UTC schedule, including daylight-saving changes where applicable. Check the current configuration before sending, prevent duplicate daily delivery, and follow the <a href="#step-15-scheduled">scheduled-work rules</a>.</li>
+<li><strong>Prove it before release:</strong> Test setup with optional fields omitted, multiple admins and allowed users/groups, individual additions and removals, allow and deny cases, the denial message, wrong-tenant access, data permissions, revoked admins, and failed configuration reads. Test the configured sender mailbox and denied sending permissions, delivery to multiple permitted recipients, recipient removal, time-zone and schedule changes, retries, and duplicate prevention in an isolated non-production environment.</li>
+</ul>
 <h4 id="govern-non-human-identities-through-their-full-lifecycle" tabindex="-1">Govern non-human identities through their full lifecycle</h4>
 <blockquote>
 <p><strong>Applies when:</strong> An agent, API, worker, scheduled job, tool adapter, deployment pipeline, or external integration authenticates without a human user.</p>
@@ -3393,7 +3509,7 @@ python -m pytest
 <p><a id="step-9"></a></p>
 <h3 id="step-9-%E2%80%94-protect-tenant-and-client-boundaries" tabindex="-1">STEP 9 — PROTECT TENANT AND CLIENT BOUNDARIES</h3>
 <blockquote>
-<p><strong>Tenant rule:</strong> A dedicated client deployment must reject identities from every tenant that is not explicitly approved for that deployment. Any approved support or management tenant needs a documented purpose, least-privileged role, time-bounded access where practical, and complete audit evidence.</p>
+<p><strong>Tenant rule:</strong> In a dedicated client deployment, reject users and applications from any tenant that is not explicitly approved. If a support or management tenant is approved, document why it needs access. Give it only the required permissions, limit the access period where practical, and keep a complete audit record.</p>
 </blockquote>
 <p>For a shared multi-tenant service, carry the trusted tenant and user context through every layer:</p>
 <ul>
@@ -3457,7 +3573,7 @@ python -m pytest
 </ul>
 <p><a id="step-11-prompts"></a></p>
 <h4 id="manage-prompts-as-released-artifacts" tabindex="-1">Manage prompts as released artifacts</h4>
-<p>Production prompts that affect model behavior are controlled artifacts, not convenient strings hidden inside request handlers.</p>
+<p>Keep production prompts that affect model behaviour in a controlled, versioned location. Do not hide them as scattered strings inside request handlers.</p>
 <ul>
 <li>Store prompts in the repository or an approved prompt registry that provides immutable versions, access control, audit history, evaluation gates, promotion, rollback, and environment separation.</li>
 <li>Give each prompt family a stable identifier and keep its version as a separate field. Record its owner, purpose, risk level, compatible models and supported settings, input contract, output schema, evaluation suite, and change reason.</li>
@@ -3487,7 +3603,7 @@ python -m pytest
 </ul>
 <p><a id="step-11-context"></a></p>
 <h4 id="engineer-the-model-context-deliberately" tabindex="-1">Engineer the model context deliberately</h4>
-<p>The complete input sent to a model is an engineered artifact. Do not send everything merely because it fits inside the model window.</p>
+<p>Choose the model's input deliberately. Do not send all available data just because the model can accept it.</p>
 <ul>
 <li>Define a context policy for each workflow and supported model. Budget system instructions, tool schemas, retrieved content, conversation state, tool results, user input, reserved output, and a safety margin.</li>
 <li>Use the tokenizer and limits of the selected model. Organization-wide numbers and examples are starting points, not universal limits; approve final values from workflow evaluations, expected document sizes, latency, and cost.</li>
@@ -3666,7 +3782,7 @@ Execute the approved tool or external action
 <blockquote>
 <p><strong>Applies when:</strong> The project exposes a Skysecure-controlled HTTP API. Provider-managed callbacks, Teams bot activities, health endpoints, and other protocol-specific endpoints must follow their provider contract and document any justified difference.</p>
 </blockquote>
-<p>Whether the team designs the OpenAPI description first or generates it from FastAPI, the exact reviewed specification becomes the released contract. Version or publish it with the release, validate it in CI, and keep the implementation, examples, client packages, and documentation aligned. Publish through Azure API Management only when APIM is part of the approved architecture.</p>
+<p>You may write the OpenAPI specification first or generate it from FastAPI. Either way, the reviewed specification is the API contract for that release. Version or publish it with the release and validate it in CI. Keep the code, examples, client packages, and documentation consistent with it. Use Azure API Management for publication only when APIM is part of the approved design.</p>
 <h5 id="design-resources-and-representations" tabindex="-1">Design resources and representations</h5>
 <p>For client-facing domain APIs:</p>
 <ul>
@@ -3859,6 +3975,7 @@ Execute the approved tool or external action
 <blockquote>
 <p><strong>Applies when:</strong> The agent sends email or another external message.</p>
 </blockquote>
+<p>For SkySecure's Microsoft 365-based agents, use Microsoft Graph for email delivery and follow the <a href="#standard-report-delivery">standard report-delivery stack</a>. Scheduling, PDF generation, and email transport are separate responsibilities; changing one does not require replacing the others.</p>
 <ul>
 <li>Authorize the sender identity, recipients, tenant, template, attachments, and business purpose.</li>
 <li>Do not let raw model output control recipients, sender, reply-to address, subject headers, or attachment paths.</li>
@@ -3906,7 +4023,7 @@ Execute the approved tool or external action
 <hr>
 <p><a id="phase-3"></a></p>
 <h2 id="phase-3-%E2%80%94-run-it-reliably" tabindex="-1">PHASE 3 — RUN IT RELIABLY</h2>
-<p><strong>Phase outcome:</strong> A bounded runtime that preserves important work, handles concurrency and scale, and makes failures visible and recoverable.</p>
+<p><strong>Phase outcome:</strong> Set runtime limits, preserve important work, handle simultaneous requests and the expected load, and make failures visible and recoverable.</p>
 <p><strong>Steps in this phase:</strong></p>
 <ul>
 <li><a href="#step-14">14 · Runtime</a></li>
@@ -3946,7 +4063,7 @@ Execute the approved tool or external action
 <p><a id="step-15"></a></p>
 <h3 id="step-15-%E2%80%94-process-important-work-durably" tabindex="-1">STEP 15 — PROCESS IMPORTANT WORK DURABLY</h3>
 <blockquote>
-<p><strong>Durability rule:</strong> Important work acknowledged before completion, continued after a response, or resumed after process loss must be represented durably before the request is considered accepted. A synchronous success must not be returned until the authoritative state and every side effect promised by that synchronous contract have completed. If an effect is only committed to a durable queue or recorded for later work, return an accepted or pending result such as <code>202</code> and expose its status.</p>
+<p><strong>Durability rule:</strong> If important work continues after the response, is accepted before completion, or must resume after a restart, save it durably before telling the caller it was accepted. For a synchronous request, return success only when the official records and every promised external action are complete. If work is only queued or saved for later, return an accepted or pending response such as <code>202</code> and provide a way to check its status.</p>
 </blockquote>
 <p><strong>In this step:</strong> <a href="#step-15-durable">Durable processing</a> · <a href="#step-15-contracts">Messages and data stores</a> · <a href="#step-15-idempotency">Idempotent writes and operations</a> · <a href="#step-15-scheduled">Scheduled work</a> · <a href="#step-15-websockets">WebSockets</a></p>
 <p><a id="step-15-durable"></a></p>
@@ -4051,6 +4168,30 @@ reconciling → running | succeeded | failed | cancelled
 <li>Alert on missed, delayed, or repeatedly failed schedules.</li>
 <li>Do not run one unsafe scheduler loop inside every API replica.</li>
 </ul>
+<p>For agent daily reports, implement the <a href="#standard-agent-setup">standard admin, access, and report setup</a>. Azure Table holds the intended configuration; the application must reliably apply it to Azure Container Apps Jobs and confirm the result. <a href="https://learn.microsoft.com/en-us/azure/container-apps/jobs">Container Apps Jobs cron expressions use UTC</a>, so preserve the user's local time and time zone and handle conversions, including daylight-saving changes where applicable.</p>
+<h5 id="standard-report-delivery" tabindex="-1">Standard scheduling, PDF generation, and email delivery</h5>
+<blockquote>
+<p><strong>SkySecure standard:</strong> Use Azure Container Apps Jobs for scheduled email/report tasks, ReportLab as the default PDF generator, and Microsoft Graph for email delivery from the configured Microsoft 365 mailbox. Apply this combination across Copilot, Foundry, and open-source agent approaches when these capabilities are used.</p>
+</blockquote>
+<table>
+<thead>
+<tr><th scope="col">Responsibility</th><th scope="col">Standard component</th><th scope="col">What it does</th></tr>
+</thead>
+<tbody>
+<tr><td>Schedule and run work</td><td>Azure Container Apps Jobs</td><td>Runs the worker that reads approved data, generates the report, and requests email delivery.</td></tr>
+<tr><td>Create a PDF</td><td>ReportLab</td><td>Builds the document from validated business data and reviewed report templates. It does not schedule work or send email.</td></tr>
+<tr><td>Send email</td><td>Microsoft Graph</td><td>Submits the message through the configured, authorized Microsoft 365 mailbox. It does not generate the PDF.</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Keep the approved email transport.</strong> Azure Communication Services is not part of this default stack. Do not introduce it or another email provider without an approved architecture review. ACS is production-capable, but it introduces a separate sender/domain setup, quotas, and usage-based charges; these are trade-offs, not evidence that the service is unsuitable for production. Graph also requires appropriate mailbox permissions and compliance with Exchange sending limits. If the required volume or sender cannot be supported, resolve that requirement before release instead of bypassing the standard.</li>
+<li><strong>Validate setup and delivery.</strong> Use the configured sender, multiple permitted recipients, local time, and time zone from <a href="#standard-agent-setup">agent setup</a>. Keep identities least-privileged, handle throttling with bounded retries, and retain durable send state. Reconcile unknown outcomes before resending. A successful job or Graph <code>202 Accepted</code> response is not proof of inbox delivery; keep submission, delivery evidence, and failure states distinct.</li>
+<li><strong>Use safe document handling.</strong> Test PDF data correctness, totals, empty results, long tables, page breaks, fonts, supported languages, file size, and required accessibility or archival properties. Escape untrusted text where the renderer interprets markup, use controlled templates and assets, and bound rendering time and memory. Do not let document content trigger arbitrary local-file or network access.</li>
+<li><strong>Handle large documents explicitly.</strong> Validate the chosen Graph attachment path and applicable size limits before sending. When an attachment is unsuitable, send an approved, permission-controlled SharePoint or storage link. Do not expose a confidential report through a public link or silently drop the attachment.</li>
+<li><strong>Do not confuse scheduling with immediate messages.</strong> Container Apps Jobs is the standard for scheduled work. An immediate event-driven email can use the agent's approved durable workflow; it still uses Graph and the same authorization, audit, and duplicate-safety controls. Plain emails do not need a PDF.</li>
+</ul>
+<p><strong>PDF renderer selection:</strong> <a href="https://docs.reportlab.com/reportlab/userguide/ch1_intro/">ReportLab</a> is the default for Python-generated invoices, tables, and daily summaries, not a claim that one library is best for every document. If an HTML/CSS template is the better fit, propose <a href="https://doc.courtbouillon.org/weasyprint/stable/">WeasyPrint</a>; if browser rendering is required, propose <a href="https://playwright.dev/docs/api/class-page#page-pdf">Playwright-based PDF generation</a>. Record the requirement, obtain architecture approval, and validate the renderer's security, dependencies, resource use, layout, and required document properties before adopting an alternative. Changing the PDF renderer does not change the Jobs/Graph standard.</p>
+<p><strong>Delivery references:</strong> <a href="https://learn.microsoft.com/en-us/graph/api/user-sendmail?view=graph-rest-1.0">Graph sending permissions and acceptance semantics</a>; <a href="https://learn.microsoft.com/en-us/office365/servicedescriptions/exchange-online-service-description/exchange-online-limits">Exchange sending limits</a>; <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/email/email-overview">ACS email overview</a>; <a href="https://learn.microsoft.com/en-us/azure/communication-services/concepts/email/email-domain-and-sender-authentication">ACS domain and sender setup</a>.</p>
 <p><a id="step-15-websockets"></a></p>
 <h4 id="websockets" tabindex="-1">WebSockets</h4>
 <blockquote>
@@ -4105,7 +4246,7 @@ reconciling → running | succeeded | failed | cancelled
 <hr>
 <p><a id="phase-4"></a></p>
 <h2 id="phase-4-%E2%80%94-prove-and-release-it" tabindex="-1">PHASE 4 — PROVE AND RELEASE IT</h2>
-<p><strong>Phase outcome:</strong> Reproducible test and security evidence, protected delivery, controlled deployment, and proven operational recovery.</p>
+<p><strong>Phase outcome:</strong> Produce repeatable test and security results, protect the release process, control deployment, and prove that the service can recover.</p>
 <p><strong>Steps in this phase:</strong></p>
 <ul>
 <li><a href="#step-18">18 · Testing</a></li>
@@ -4184,12 +4325,14 @@ reconciling → running | succeeded | failed | cancelled
 <p><a id="step-19"></a></p>
 <h3 id="step-19-%E2%80%94-use-ci%2Fcd-to-protect-production" tabindex="-1">STEP 19 — USE CI/CD TO PROTECT PRODUCTION</h3>
 <h4 id="keep-source-and-contract-history-traceable" tabindex="-1">Keep source and contract history traceable</h4>
-<p>Each repository must document its branch, merge, and release model. Protect every branch, tag, or deployment environment capable of release. If long-lived development or production branches are used, protect them. Use short-lived change branches with a consistent form such as:</p>
-<pre class='hljs'><code><div>feat/&lt;work-item&gt;-&lt;short-description&gt;
-fix/&lt;work-item&gt;-&lt;short-description&gt;
-chore/&lt;work-item&gt;-&lt;short-description&gt;
-docs/&lt;work-item&gt;-&lt;short-description&gt;
+<p>Document how your repository handles branches, pull requests, and releases. Protect every branch, tag, and deployment environment that can release software, including long-lived development and production branches. Create one short-lived branch for each task, using the same prefixes as the organization README:</p>
+<pre class='hljs'><code><div>feature/&lt;task&gt;
+fix/&lt;issue&gt;
+docs/&lt;task&gt;
+chore/&lt;task&gt;
 </div></code></pre>
+<p>Use a short, hyphen-separated description for <code>&lt;task&gt;</code> or <code>&lt;issue&gt;</code>. Include the work-item ID when your project uses one. For example: <code>feature/123-daily-report</code> or <code>fix/456-duplicate-email</code>. Use <code>feature/</code>, not <code>feat/</code>, for feature branches.</p>
+<p>For agent repositories, start from the latest <code>dev</code>, raise the PR into <code>dev</code>, and delete the task branch after review, merge, and dependency checks. Keep <code>dev</code> and any <code>prod</code>, <code>test</code>, or other environment branches still needed by the workflow. Documentation and governance repositories follow their own configured default branches; this guide uses a PR into <code>prod</code>.</p>
 <ul>
 <li>Use Conventional Commit messages when release automation or changelog generation depends on them.</li>
 <li>Link the pull request and final merge to the approved work item. Do not require every intermediate commit to repeat the reference when the repository uses squash merging.</li>
@@ -4387,7 +4530,7 @@ docs/&lt;work-item&gt;-&lt;short-description&gt;
 <hr>
 <p><a id="phase-5"></a></p>
 <h2 id="phase-5-%E2%80%94-document-and-confirm-it" tabindex="-1">PHASE 5 — DOCUMENT AND CONFIRM IT</h2>
-<p><strong>Phase outcome:</strong> Documentation that matches reality and an evidence-backed production decision.</p>
+<p><strong>Phase outcome:</strong> Keep the documentation accurate and use verified results to decide whether the agent is ready for production.</p>
 <p><strong>Steps in this phase:</strong></p>
 <ul>
 <li><a href="#step-22">22 · Documentation</a></li>
@@ -4395,7 +4538,7 @@ docs/&lt;work-item&gt;-&lt;short-description&gt;
 </ul>
 <p><a id="step-22"></a></p>
 <h3 id="step-22-%E2%80%94-keep-documentation-aligned-with-reality" tabindex="-1">STEP 22 — KEEP DOCUMENTATION ALIGNED WITH REALITY</h3>
-<p>Every repository must contain or link to each applicable item below. For a conditional item, provide the artifact or record <code>Not applicable — reason</code>; silence is not evidence.</p>
+<p>Keep each applicable item below in the repository, or link to its approved location. For a conditional item, provide the document or record <code>Not applicable — reason</code>. Leaving it blank does not show that it was checked.</p>
 <h4 id="required-for-every-repository" tabindex="-1">Required for every repository</h4>
 <ul>
 <li>Purpose, supported use cases, and limitations.</li>
@@ -4435,6 +4578,7 @@ docs/&lt;work-item&gt;-&lt;short-description&gt;
 <ul>
 <li>The approved non-human identity inventory or central registry link, including owners, purpose, environments, permission scopes, review status, rotation, revocation, and offboarding.</li>
 <li>Client onboarding and offboarding instructions when the solution is delivered to clients.</li>
+<li>The <a href="#step-24">autodeployment handoff package</a> and <a href="#0.4-declare-autodeployment-prerequisites">declared setup requirements</a> when Agent Factory deploys the solution.</li>
 <li>Local development and production deployment instructions.</li>
 <li>Monitoring dashboards, alerts, and support runbooks.</li>
 <li>Backup, recovery, incident, and manual-fallback procedures where applicable.</li>
@@ -4444,9 +4588,10 @@ docs/&lt;work-item&gt;-&lt;short-description&gt;
 <hr>
 <p><a id="step-23"></a></p>
 <h3 id="step-23-%E2%80%94-final-production-check" tabindex="-1">STEP 23 — FINAL PRODUCTION CHECK</h3>
-<p>Before production deployment, create the approval record with its owner, independent reviewer, decision date, approved source commit, immutable release-artifact digest, intended non-secret configuration fingerprint, and pre-deployment decision.</p>
-<p>For each outcome below, record <code>Pass</code>, <code>Not applicable</code>, or <code>Approved exception</code> and link the evidence. <code>Not applicable</code> needs a reason. An exception needs its risk, compensating controls, approver, expiry, and removal plan. Apply the approved risk method: a Critical or High residual security, privacy, safety, legal or compliance, tenant-isolation, data-integrity, or material-correctness risk blocks release until technically reduced below High and revalidated.</p>
-<p>Copy these outcome questions into the final approval record and complete the status and evidence there. Do not edit the controlled master guide.</p>
+<p>Before deploying to production, create a release approval record. Include the owner, independent reviewer, decision date, approved source commit, exact immutable release artifact's digest (content hash), intended configuration fingerprint without secret values, and the decision made before deployment.</p>
+<p>For each outcome below, record <code>Pass</code>, <code>Not applicable</code>, or <code>Approved exception</code> and link the evidence. Explain every <code>Not applicable</code> answer. For an exception, record the risk, alternative safeguards, approver, expiry, and plan to remove the exception.</p>
+<p>Use the approved risk method. Do not release while a Critical or High risk remains in security, privacy, safety, legal or compliance obligations, tenant isolation, data integrity, or important business results. Fix or technically contain the problem, reduce the remaining risk below High, and verify the result again.</p>
+<p>Copy these questions into your final approval record. Complete the status and evidence there, not in this shared guide.</p>
 <ol>
 <li>
 <p><strong><a href="#step-1">Business flow</a></strong> — The implementation matches the real business flow, including exceptions, corrections, approvals, and recovery.</p>
@@ -4456,14 +4601,14 @@ docs/&lt;work-item&gt;-&lt;short-description&gt;
 </ul>
 </li>
 <li>
-<p><strong><a href="#step-3">Code quality</a>, <a href="#step-6">configuration</a>, and portability</strong> — The code is understood, maintainable, externally configured, and deployable to a clean client environment without source changes.</p>
+<p><strong><a href="#step-3">Code quality</a>, <a href="#step-6">configuration</a>, and portability</strong> — The code is understood, maintainable, externally configured, and deployable to a clean client environment without source changes. The <a href="#one-environment-selection">single environment selection</a> supplies the correct configuration for the app and its jobs, with isolated test data and the same security and data-integrity controls proven before release. The <a href="#reusable-agent-approaches">replaceable AI approach standard</a> separates business rules from provider-specific code, with evidence for every supported variant.</p>
 <ul>
 <li><strong>Status:</strong> <code>[Pass / Not applicable / Approved exception]</code></li>
 <li><strong>Evidence, N/A reason, or exception record:</strong> <code>[Link or reference]</code></li>
 </ul>
 </li>
 <li>
-<p><strong><a href="#step-7">Security</a>, <a href="#step-8">identity</a>, <a href="#step-9">tenant isolation</a>, and <a href="#step-10">data protection</a></strong> — Authentication, authorization, tenant isolation, least privilege, secrets, and sensitive data are properly protected.</p>
+<p><strong><a href="#step-7">Security</a>, <a href="#step-8">identity</a>, <a href="#step-9">tenant isolation</a>, and <a href="#step-10">data protection</a></strong> — Authentication, authorization, tenant isolation, least privilege, secrets, and sensitive data are properly protected. The <a href="#standard-agent-setup">standard agent setup</a> is implemented and tested, including multiple optional Agent Admins, multiple allowed users/groups, explicit access modes, denied-user messaging, and the sender mailbox, multiple recipients, time, and time zone when reporting is supported.</p>
 <ul>
 <li><strong>Status:</strong> <code>[Pass / Not applicable / Approved exception]</code></li>
 <li><strong>Evidence, N/A reason, or exception record:</strong> <code>[Link or reference]</code></li>
@@ -4477,7 +4622,7 @@ docs/&lt;work-item&gt;-&lt;short-description&gt;
 </ul>
 </li>
 <li>
-<p><strong><a href="#step-15">Reliability and duplicate safety</a>, <a href="#step-21">audit, and recovery</a></strong> — Important processing is durable, concurrency-safe, auditable, recoverable after failure or restart, and duplicate-safe through verified idempotency or visible ambiguous-outcome reconciliation.</p>
+<p><strong><a href="#step-15">Reliability and duplicate safety</a>, <a href="#step-21">audit, and recovery</a></strong> — Important processing is durable, concurrency-safe, auditable, recoverable after failure or restart, and duplicate-safe through verified idempotency or visible ambiguous-outcome reconciliation. Where scheduled emails or PDF reports apply, the <a href="#standard-report-delivery">Jobs, ReportLab, and Graph standard</a> or its approved exception has been tested, including document correctness, sender/recipient permissions, and delivery-failure handling.</p>
 <ul>
 <li><strong>Status:</strong> <code>[Pass / Not applicable / Approved exception]</code></li>
 <li><strong>Evidence, N/A reason, or exception record:</strong> <code>[Link or reference]</code></li>
@@ -4498,7 +4643,7 @@ docs/&lt;work-item&gt;-&lt;short-description&gt;
 </ul>
 </li>
 <li>
-<p><strong><a href="#step-20">Release artifact</a></strong> — The exact reviewed artifact is proven in client-like staging and is ready for a safe production smoke or canary check.</p>
+<p><strong><a href="#step-20">Release artifact</a></strong> — The exact reviewed artifact is proven in client-like staging and is ready for a safe production smoke or canary check. Where Agent Factory autodeployment applies, the deployment owner has verified the complete <a href="#step-24">handoff package</a>, required client setup, and permission checks against that release.</p>
 <ul>
 <li><strong>Status:</strong> <code>[Pass / Not applicable / Approved exception]</code></li>
 <li><strong>Evidence, N/A reason, or exception record:</strong> <code>[Link or reference]</code></li>
@@ -4568,8 +4713,37 @@ docs/&lt;work-item&gt;-&lt;short-description&gt;
 </ul>
 </li>
 </ol>
-<p>After the production canary or smoke test, append the actual deployed artifact digest, actual non-secret configuration fingerprint, smoke/canary and reconciliation results, and the decision to continue traffic or execute recovery. This closes the release record; it must not be filled from an intended deployment value before production verification.</p>
-<p>If any applicable outcome is not <code>Pass</code>, lacks a valid approved exception, or carries a release-blocking residual risk, the agent still needs engineering work or recovery before full production use.</p>
+<p>After the production canary or smoke test, add the actual deployed artifact digest and actual configuration fingerprint without secret values. Include the test and reconciliation results, and the decision to continue traffic or recover the service. Only then is the release record complete. Do not fill these fields from planned values before checking the real production deployment.</p>
+<p>Before full production use, every applicable outcome must be <code>Pass</code> or have a valid approved exception. Any remaining release-blocking risk still requires a fix or recovery.</p>
+<p><strong>Continue:</strong> <a href="#phase-6">Phase 6 · Hand off for autodeployment</a> · <a href="#guide-navigation">Guide navigation</a></p>
+<hr>
+<p><a id="phase-6"></a></p>
+<h2 id="phase-6-%E2%80%94-hand-it-off" tabindex="-1">PHASE 6 — HAND OFF FOR AUTODEPLOYMENT</h2>
+<p><strong>Phase outcome:</strong> Give the deployment owner one versioned package with everything needed to install and configure the agent for a client.</p>
+<p><strong>Steps in this phase:</strong></p>
+<ul>
+<li><a href="#step-24">24 · Autodeployment handoff</a></li>
+</ul>
+<p><a id="step-24"></a></p>
+<h3 id="step-24-%E2%80%94-hand-off-the-completed-agent-for-autodeployment" tabindex="-1">STEP 24 — HAND OFF THE COMPLETED AGENT FOR AUTODEPLOYMENT</h3>
+<blockquote>
+<p><strong>Applies when:</strong> Agent Factory autodeployment installs the agent for a client. Prepare this package before the first clean-client deployment and keep it aligned with each release. This handoff does not replace the <a href="#step-23">final production check</a>.</p>
+</blockquote>
+<p>The agent developer must provide the following to the deployment owner. Mark an approach-specific item <code>Not applicable</code> with a reason when the agent does not use it.</p>
+<ul>
+<li><strong>Power Platform solution ZIP:</strong> Supply the exported, versioned solution when the agent uses Power Platform, together with its import prerequisites and environment-specific configuration mappings.</li>
+<li><strong>SharePoint templates:</strong> Supply the required site, list, or library templates and schemas when SharePoint is used. Include setup requirements, not customer documents or live client values.</li>
+<li><strong>Agent manifest:</strong> Supply the manifest required by the selected approach, with its version and the fields that autodeployment must replace for each client.</li>
+<li><strong>Updated <code>.env.example</code>:</strong> List every application setting and document the non-secret constants or defaults that genuinely stay the same across deployments. Use placeholders for client-specific values and secret references; never include real credentials or hard-code client mailboxes, tenant IDs, or resource IDs. Follow the <a href="#one-environment-selection">single environment selection</a> standard.</li>
+<li><strong>Agent icon:</strong> Supply the approved icon assets in the formats and sizes required by the target platform.</li>
+<li><strong>App registration scopes and permissions:</strong> List the exact delegated/application permissions, required consent, workload identities, Azure role scopes, and mailbox access or sending rights. Explain the purpose and approved grant process; do not request broad access merely to simplify installation.</li>
+<li><strong>Azure resources:</strong> List all required resources and dependencies, including the main app, any Container Apps Jobs, configuration storage, and their parameterized deployment definitions. Distinguish resources that are created from those the client must already provide.</li>
+<li><strong>Azure Table columns:</strong> Supply the complete contract from <a href="#0.4-declare-autodeployment-prerequisites">Step 0.4</a>, including required/optional fields, multi-value formats, identity validation, and the <a href="#standard-agent-setup">admin, access, sender, recipient, and schedule settings</a>.</li>
+<li><strong>Any other agent-specific prerequisites:</strong> Declare additional licenses, approvals, integrations, callback configuration, or dependencies. Flag gaps to the deployment owner before release instead of leaving install-time requirements undocumented.</li>
+</ul>
+<p><strong>Approach-specific handoff:</strong> Include the <a href="#reusable-agent-approaches">common-code and AI-approach boundary</a>, the exact files/settings that differ, required platform artifacts, and test evidence for the selected approach. Each approach repository must be buildable and deployable independently.</p>
+<p><strong>Handoff check:</strong> Record the source commit and exact, unchanged artifact versions, and name the deployment owner. Use the package to prove that the agent installs in a fresh client-like environment without editing the source code. Show that incomplete required setup blocks business processing, and that completed setup enables only the intended operations.</p>
+<p>Keep customer values, secrets, and private deployment evidence in approved access-controlled locations—not in this public guide or its pull requests.</p>
 <p><a href="#guide-navigation">↑ Back to guide navigation</a></p>
 
     </main>
