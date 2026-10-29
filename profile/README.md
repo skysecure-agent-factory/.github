@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/skysecure-agent-factory/.github/prod/profile/assets/realize-banner.svg" alt="SkySecure Agent Factory — Build for the business. Deliver through Realize." width="100%" />
+  <img src="https://raw.githubusercontent.com/skysecure-agent-factory/.github/prod/profile/assets/realize-banner.svg" alt="Skysecure Agent Factory — Build for the business. Deliver through Realize." width="100%" />
 </p>
 
 <p align="center">
@@ -56,7 +56,7 @@ Availability varies by agent. Open-source delivery is planned; model suitability
 > [!IMPORTANT]
 > **Every developer must use the engineering guide when building or releasing an agent.**
 >
-> [Open the SkySecure AI Agent Engineering and Production Guide →](https://skysecure-agent-factory.github.io/.github/)
+> [Open the Skysecure AI Agent Engineering and Production Guide →](https://skysecure-agent-factory.github.io/.github/)
 
 1. **Define the scope.** Complete [Step 0: project profile](https://skysecure-agent-factory.github.io/.github/#step-0) and identify the applicable controls.
 
@@ -166,6 +166,6 @@ This page is public. Never publish customer data, secrets, private infrastructur
 <br />
 
 <p align="center">
-  <strong>SkySecure Agent Factory · Realize</strong><br />
+  <strong>Skysecure Agent Factory · Realize</strong><br />
   Focused on the business. Built for accountable delivery.
 </p>
